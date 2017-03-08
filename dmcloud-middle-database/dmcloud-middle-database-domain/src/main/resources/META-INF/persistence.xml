@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+    <!-- jpa整合hibernate配置 -->
+	<persistence-unit name="CloudJPA" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		
+		<!-- 映射超类 -->
+		<class>com.apical.dmcloud.middle.infra.AbstractIDEntity</class>
+		<class>com.apical.dmcloud.middle.infra.AbstractVersionEntity</class>
+		
+		<!-- 行车资源 -->
+		<class>com.apical.dmcloud.storage.middle.core.domain.Resource</class>
+		<class>com.apical.dmcloud.storage.middle.core.domain.Picture</class>
+		<class>com.apical.dmcloud.storage.middle.core.domain.Video</class>
+		<class>com.apical.dmcloud.storage.middle.core.domain.StorageInfo</class>
+		
+		<!-- 权限信息 -->
+		<class>com.apical.dmcloud.security.middle.core.domain.UserLoginRecord</class>
+		<class>com.apical.dmcloud.security.middle.core.domain.User</class>
+		
+		<!-- 行车详情 -->
+		<class>com.apical.dmcloud.driving.middle.core.domain.DeviceDrivingRecord</class>
+		
+		<!-- 报警信息 -->
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceLoginRecord</class>
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmRecord</class>
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmType</class>
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmPicture</class>
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmVideo</class>
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceRetransmission</class>
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceUploadBreakpoint</class>
+		
+		<!-- 行车管理 -->
+		<class>com.apical.dmcloud.vehicle.middle.core.domain.Company</class>
+		<class>com.apical.dmcloud.vehicle.middle.core.domain.Device</class>
+		<class>com.apical.dmcloud.vehicle.middle.core.domain.Driver</class>
+		<class>com.apical.dmcloud.vehicle.middle.core.domain.SIMCard</class>
+		<class>com.apical.dmcloud.vehicle.middle.core.domain.Vehicle</class>
+		<class>com.apical.dmcloud.vehicle.middle.core.domain.VehicleStatus</class>
+		<class>com.apical.dmcloud.vehicle.middle.core.domain.Violation</class>
+		
+		<!-- 规则管理 -->
+		<class>com.apical.dmcloud.rule.middle.core.domain.Rule</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.DrivingArea</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.DrivingRoute</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.DrivingAreaGPSData</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.DrivingRouteGPSData</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleAreaSpeed</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleFatigue</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleNight</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleNoentry</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleNoout</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleRouteOffset</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleSubSection</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleTakePicture</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleTakeVideo</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.RuleVibration</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.TakePictureInfo</class>
+		<class>com.apical.dmcloud.rule.middle.core.domain.TakeVideoInfo</class>
+		
+		<properties>
+			<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false"/>
+			<property name="hibernate.connection.provider_class" value="org.hibernate.connection.ProxoolConnectionProvider"/>
+			<property name="hibernate.connection.autoReconnect" value="true"/>
+			<property name="hibernate.connection.autoReconnectForPools" value="true"/>
+			<property name="hibernate.connection.is-connection-validation-required" value="true"/>
+			<property name="hibernate.proxool.pool_alias" value="DBPool"/>
+			<property name="hibernate.proxool.xml" value="proxool.xml"/> -->
+
+		<!-- 	<property name="hibernate.connection.url" value="${db.connectionURL}"/> -->
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+		<!-- 	<property name="hibernate.connection.username" value="${db.username}"/>
+			<property name="hibernate.connection.password" value="${db.password}"/> -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />
+			<property name="hibernate.show_sql" value="false" />      
+	      	<property name="hibernate.format_sql" value="false"/> 
+	      	<property name="hibernate.connection.autoReconnect" value="true"/>
+			<property name="hibernate.connection.autoReconnectForPools" value="true"/>
+			<property name="hibernate.connection.is-connection-validation-required" value="true"/>
+			<property name="hibernate.connection.provider_class" value="com.alibaba.druid.support.hibernate.DruidConnectionProvider"/>
+			<property name="url" value="${db.connectionURL}" />
+			<property name="username" value="${db.username}" />
+			<property name="password" value="${db.password}" />
+			<!-- 过滤器 -->
+			<property name="filters" value="stat,slf4j" />
+			<!-- 配置初始化大小、最小、最大 -->
+			<property name="initialSize" value="10" />
+			<property name="minIdle" value="10" />
+			<property name="maxActive" value="300" />
+		
+			<!-- 配置获取连接等待超时的时间 -->
+			<property name="maxWait" value="60000" />
+		
+			<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+			<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		
+			<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+			<property name="minEvictableIdleTimeMillis" value="300000" />
+			
+			<property name="validationQuery" value="SELECT 'x'" />
+			<property name="testWhileIdle" value="true" />
+			<property name="testOnBorrow" value="false" />
+			<property name="testOnReturn" value="false" />
+		
+			<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+			<property name="poolPreparedStatements" value="false" />
+			<property name="maxPoolPreparedStatementPerConnectionSize"
+				value="20" />
+			<!-- 监控日志保存 -->
+			<property name="druid.timeBetweenLogStatsMillis" value="300000"/>	
+		    <!-- 超过时间限制是否回收 -->  
+		    <property name="removeAbandoned" value="true" />  
+		    <!-- 超时时间；单位为秒。180秒=3分钟 -->  
+		    <property name="removeAbandonedTimeout" value="180" />  
+		    <!-- 关闭abanded连接时输出错误日志 -->  
+		    <property name="logAbandoned" value="true" />
+			</properties>
+		
+		
+	</persistence-unit>
+</persistence>

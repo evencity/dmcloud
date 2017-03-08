@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.apical.dmcloud.dmcloud-spring-database</groupId>
+    <artifactId>dmcloud-spring-database</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>dmcloud-spring-database-domain</artifactId>
+  <name>dmcloud-spring-database-domain</name>
+  <url>http://maven.apache.org</url>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+  		<dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.2.3</version>
+        </dependency> 
+        
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>17.0</version>
+        </dependency>
+        
+    	<dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        
+        <dependency> 
+            <groupId>proxool</groupId>  
+            <artifactId>proxool</artifactId> 
+            <version>0.9.1</version>
+        </dependency> 
+        
+        <dependency>
+			<groupId>proxool</groupId>
+			<artifactId>proxool-cglib</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+        
+        <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+		</dependency>
+		
+		<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.3.0.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.35</version>
+		</dependency>
+		
+		<dependency> 
+            <groupId>org.dayatang.dddlib</groupId>  
+            <artifactId>dddlib-domain</artifactId>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-query-channel</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.javassist</groupId>
+					<artifactId>javassist</artifactId>
+				</exclusion>
+			</exclusions>
+	    </dependency>
+	    
+	    <dependency> 
+            <groupId>org.openkoala.security</groupId>  
+            <artifactId>koala-security-shiro</artifactId>  
+            <version>${koala.version}</version>
+        </dependency>   
+        
+        <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-exception</artifactId>
+	   </dependency>
+	  
+        <dependency> 
+            <groupId>org.openkoala.koalacommons</groupId>  
+            <artifactId>koala-commons-domain</artifactId> 
+        </dependency>
+        
+        <dependency>
+		    <groupId>org.openkoala.koalacommons</groupId>
+	        <artifactId>koala-commons-support</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+		    <groupId>org.openkoala.koalacommons</groupId>
+	        <artifactId>koala-commons-resourceloader</artifactId>
+	        <version>${koala.version}</version>
+	    </dependency>
+	    
+	    <dependency>
+			<groupId>com.apical.dmcloud.dmcloud-commons</groupId>
+			<artifactId>dmcloud-commons-support</artifactId>
+			<version>${project.parent.version}</version>
+	   </dependency>
+	   
+	<!--    <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.10.2</version>
+         </dependency>
+
+		<dependency>
+			<groupId>org.jgroups</groupId>
+			<artifactId>jgroups</artifactId>
+			<version>3.6.4.Final</version>
+		</dependency> -->
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-jgroupsreplication</artifactId>
+			<version>1.7</version>
+		<!-- 	<exclusions>
+				<exclusion>
+					<artifactId>ehcache-core</artifactId>
+					<groupId>net.sf.ehcache</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jgroups</artifactId>
+					<groupId>org.jgroups</groupId>
+				</exclusion>
+			</exclusions> -->
+		</dependency>
+
+	<dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>druid</artifactId>
+		<version>1.0.24</version>
+	</dependency>
+         
+	   
+  </dependencies>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+          <exclude>**/.svn/*</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

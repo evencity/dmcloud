@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!DOCTYPE xml>
+<something-else-entirely>
+	<proxool>
+		<alias>DBPool</alias>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		
+		<driver-url>jdbc:mysql://192.168.0.236:3306/dmclouddbhym?useUnicode=true&amp;characterEncoding=UTF-8</driver-url>
+		<driver-properties>
+			<property name="user" value="root"/>
+			<property name="password" value="root"/>
+			<property name="autoReconnect" value="true" />
+		</driver-properties>
+		
+		<!--<driver-url>jdbc:mysql://rds40pq1iozva7028n8c.mysql.rds.aliyuncs.com:3306/dmclouddb?useUnicode=true&amp;characterEncoding=UTF-8</driver-url>
+		<driver-properties>
+			<property name="user" value="apical"/>
+			<property name="password" value="apical_mysql_rds"/>
+		</driver-properties>-->
+		
+		<!-- 一个线程持有一个连接的最长时间-->
+		<maximum-active-time>180000</maximum-active-time>
+		
+		<!-- proxool自动侦察各个连接状态的时间间隔(毫秒),侦察到空闲的连接就马上回收,超时的销毁-->
+		<house-keeping-sleep-time>60000</house-keeping-sleep-time>
+		
+		<!-- 最少保持的空闲连接数-->
+		<prototype-count>5</prototype-count>
+		
+		<!-- 允许最大连接数,超过了这个连接，再有请求时，就排在队列中等候，最大的等待请求数由maximum-new-connections决定-->
+		<maximum-connection-count>50</maximum-connection-count>
+		
+		<!-- 最小连接数-->
+		<minimum-connection-count>10</minimum-connection-count>
+		
+		<!-- 测试连接语句 -->
+		<house-keeping-test-sql>SELECT CURRENT_USER</house-keeping-test-sql>
+		<test-before-use>true</test-before-use>
+		
+		<!-- 一次建立的最大连接数 -->
+		<simultaneous-build-throttle>20</simultaneous-build-throttle>
+		
+	</proxool>
+</something-else-entirely>
