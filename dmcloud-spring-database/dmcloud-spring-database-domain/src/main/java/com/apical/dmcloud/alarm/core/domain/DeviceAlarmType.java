@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.dayatang.utils.Assert;
-import org.openkoala.security.core.domain.SecurityAbstractEntity;
 
+import com.apical.dmcloud.AbstractIntegerIDEntity;
 import com.apical.dmcloud.alarm.core.NameIsExistedException;
 import com.apical.dmcloud.alarm.core.UnsupportedAlarmTypeException;
 import com.apical.dmcloud.commons.infra.AlarmType;
@@ -22,7 +22,7 @@ import com.apical.dmcloud.commons.infra.AlarmType;
 
 @Entity
 @Table(name = "cl_alarm_type")
-public class DeviceAlarmType extends SecurityAbstractEntity
+public class DeviceAlarmType extends AbstractIntegerIDEntity
 {
 	/**
 	 * serialVersionUID = 5508335498457027100L;

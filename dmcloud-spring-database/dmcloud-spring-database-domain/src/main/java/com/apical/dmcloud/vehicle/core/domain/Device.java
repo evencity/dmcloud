@@ -137,15 +137,12 @@ public class Device extends SecurityAbstractEntity
 		P2PUUID = p2puuid;
 	}
 
-	protected Device()
-	{
+	protected Device() {
 	}
 	
-	public Device(String number)
-	{
+	public Device(String number) {
 		checkNumber(number);
-		if(isExistDeviceNumber(number))
-		{
+		if(isExistDeviceNumber(number)) {
 			throw new DeviceIsExistException("Device is exist with number "+ number);
 		}
 		
@@ -388,14 +385,12 @@ public class Device extends SecurityAbstractEntity
 	 * @param number 设备编号
 	 * @return 是否已被使用
 	 */
-	public static boolean isExistDeviceNumber(String number)
-	{
+	public static boolean isExistDeviceNumber(String number) {
 		String jpql = "select _device.id from Device _device where _device.number= :number";
     	Long id = getRepository().createJpqlQuery(jpql.toString())
     			.addParameter("number", number)
     			.singleResult();
-    	if(id == null)
-    	{
+    	if(id == null) {
     		return false;
     	}
     	else
@@ -415,8 +410,7 @@ public class Device extends SecurityAbstractEntity
     	Long id = getRepository().createJpqlQuery(jpql.toString())
     			.addParameter("number", number)
     			.singleResult();
-    	if(id == null)
-    	{
+    	if(id == null) {
     		throw new DeviceNotExistException("Device not exit with number" + number);
     	}
     	return id;
@@ -427,14 +421,12 @@ public class Device extends SecurityAbstractEntity
 	 * @param vehicleId 车辆id
 	 * @return 设备信息
 	 */
-	public static List<Device> getByVehicleId(long vehicleId)
-	{	
+	public static List<Device> getByVehicleId(long vehicleId) {	
 		String jpql = "select _device from Device _device where _device.vehicle.id = :id";
 		List<Device> devices = getRepository().createJpqlQuery(jpql.toString())
 							.addParameter("id", vehicleId)
 							.list();
-		if(devices != null)
-		{
+		if(devices != null) {
 			return devices;
 		}
 		else
@@ -456,8 +448,7 @@ public class Device extends SecurityAbstractEntity
 		Device device = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("simId", simId)
 				.singleResult();
-		if(device == null)
-		{
+		if(device == null) {
 			throw new DeviceNotExistException("Device of simId "+ simId + "not exist");
 		}
 		return device;
@@ -470,16 +461,14 @@ public class Device extends SecurityAbstractEntity
 	 * @param pageSize 页面大小（pageSize >= 1）
 	 * @return 设备信息
 	 */
-	public static List<Device> findAllDevicesInPage(String companyName, int pageCount, int pageSize)
-	{
+	public static List<Device> findAllDevicesInPage(String companyName, int pageCount, int pageSize) {
 		String jpql = "select _device from Device _device where _device.company.name = :name";
 		List<Device> devices =getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("name", companyName)
 				.setMaxResults(pageSize)
 				.setFirstResult((pageCount - 1) * pageSize)
 				.list();
-		if(devices != null)
-		{
+		if(devices != null) {
 			return devices;
 		}
 		else
@@ -492,8 +481,7 @@ public class Device extends SecurityAbstractEntity
 	 * @param companyName
 	 * @return 设备总数
 	 */
-	public static long countAllDevicesByCompany(String companyName)
-	{
+	public static long countAllDevicesByCompany(String companyName) {
 	
 		String jpql = "select count(_device.id) from Device _device where _device.company.name = :name";
 		Long count = getRepository().createJpqlQuery(jpql.toString())
@@ -512,8 +500,7 @@ public class Device extends SecurityAbstractEntity
 		String vehicleNumber = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("number", number)
 				.singleResult();
-		if(vehicleNumber == null)
-		{
+		if(vehicleNumber == null) {
 			throw new VehicleNotExistException("Device of number"+ number +" no't banding vehicle");
 		}
 		else
@@ -532,8 +519,7 @@ public class Device extends SecurityAbstractEntity
 		Long id = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("number", number)
 				.singleResult();
-		if(id == null)
-		{
+		if(id == null) {
 			throw new VehicleNotExistException("Device of number"+ number +" no't banding vehicle");
 		}
 		else
@@ -553,8 +539,7 @@ public class Device extends SecurityAbstractEntity
 	 * @param pageSize
 	 * @return  List<Device>
 	 */
-	public static List<Device> queryAllDevicesInByKeyWordsInPage(String companyName, String number, String type,String brand,String model,int pageCount, int pageSize)
-	{
+	public static List<Device> queryAllDevicesInByKeyWordsInPage(String companyName, String number, String type,String brand,String model,int pageCount, int pageSize) {
 		StringBuilder jpql = new StringBuilder("select _device from Device _device left join fetch _device.vehicle left join fetch _device.company  where");
 		Map<String,Object> conditions = new HashMap<String,Object>();			
 		if(!StringUtils.isBlank(companyName)){
@@ -589,8 +574,7 @@ public class Device extends SecurityAbstractEntity
 				.setMaxResults(pageSize)
 				.setFirstResult((pageCount - 1) * pageSize)
 				.list();
-		if(devices != null)
-		{
+		if(devices != null) {
 			return devices;
 		}
 		else
@@ -611,8 +595,7 @@ public class Device extends SecurityAbstractEntity
 	 * @param model  型号
 	 * @return  long 设备数量
 	 */
-	public static long countAllDevicesInByKeyWords(String companyName, String number, String type,String brand,String model)
-	{
+	public static long countAllDevicesInByKeyWords(String companyName, String number, String type,String brand,String model) {
 		StringBuilder jpql = new StringBuilder("select count(_device.id) from Device _device where");
 		Map<String,Object> conditions = new HashMap<String,Object>();			
 		if(!StringUtils.isBlank(companyName)){
@@ -649,8 +632,7 @@ public class Device extends SecurityAbstractEntity
 	 * @param P2PUUID
 	 * @return 设备
 	 */
-	public static Device getDeviceByP2PUUID(String P2PUUID)
-	{
+	public static Device getDeviceByP2PUUID(String P2PUUID) {
 		String jpql = "select t from Device t where t.P2PUUID = :P2PUUID";
 		Device device = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("P2PUUID", P2PUUID)
