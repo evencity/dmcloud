@@ -380,7 +380,6 @@ public class Device extends SecurityAbstractEntity
 
 	@Override
 	public String[] businessKeys() {
-		// TODO Auto-generated method stub
 		return new String[]{"Device"};
 	}
 	
@@ -645,4 +644,17 @@ public class Device extends SecurityAbstractEntity
 		
 	}
 	
+	/**
+	 * 通过P2PUUID，来获取设备
+	 * @param P2PUUID
+	 * @return 设备
+	 */
+	public static Device getDeviceByP2PUUID(String P2PUUID)
+	{
+		String jpql = "select t from Device t where t.P2PUUID = :P2PUUID";
+		Device device = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("P2PUUID", P2PUUID)
+				.singleResult();
+		return device;
+	}
 }

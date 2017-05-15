@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,14 +14,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NoResultException;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.JpqlQuery;
 import org.dayatang.utils.Assert;
-import org.hibernate.annotations.Cascade;
 import org.openkoala.security.core.domain.SecurityAbstractEntity;
 
 import com.apical.dmcloud.commons.infra.LicencePlate;
