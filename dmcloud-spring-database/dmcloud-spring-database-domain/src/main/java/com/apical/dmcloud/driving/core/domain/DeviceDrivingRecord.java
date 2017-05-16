@@ -528,7 +528,7 @@ public class DeviceDrivingRecord extends KoalaAbstractEntity
 	public static long countAllByVehicleIdAndTimerange(long vehicleId, Date startDate, Date endDate)
 	{
 		String jpql = "select count(_record.id) from DeviceDrivingRecord _record where _record.vehicleId=:vehicleId"
-				+ " and _record.startTime >= :beginDate and _record.endTime =< :endDate";
+				+ " and _record.startTime >= :beginDate and _record.endTime <= :endDate";
 		Long count = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("vehicleId", vehicleId)
 				.addParameter("beginDate", startDate)
@@ -566,7 +566,7 @@ public class DeviceDrivingRecord extends KoalaAbstractEntity
 			Date startDate, Date endDate)
 	{
 		String query = "select _record from DeviceDrivingRecord _record where _record.vehicleId=:vehicleId"
-				+ " and _record.startTime >= :beginDate and _record.endTime =< :endDate"
+				+ " and _record.startTime >= :beginDate and _record.endTime <= :endDate"
 				+ " order by _record.uploadTime desc";
 		List<DeviceDrivingRecord> records = getRepository().createJpqlQuery(query)
 				.addParameter("vehicleId", vehicleId)
@@ -613,7 +613,7 @@ public class DeviceDrivingRecord extends KoalaAbstractEntity
 			Date startDate, Date endDate, int pageCount, int pageSize)
 	{
 		String query = "select _record from DeviceDrivingRecord _record where _record.vehicleId=:vehicleId"
-				+ " and _record.startTime >= :beginDate and _record.endTime =< :endDate"
+				+ " and _record.startTime >= :beginDate and _record.endTime <= :endDate"
 				+ " order by _record.uploadTime desc";
 		List<DeviceDrivingRecord> records = getRepository().createJpqlQuery(query)
 				.addParameter("vehicleId", vehicleId)

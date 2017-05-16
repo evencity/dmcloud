@@ -127,7 +127,7 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 	 * @param id 类型id
 	 * @return 删除是否成功
 	 */
-	public static boolean deleteById(int id) {
+/*	public static boolean deleteById(int id) {
 		String jpql = "delete from DevicePeripheralsAlarmType _record where _record.id=:id";
 		int count = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("id", id)
@@ -139,7 +139,7 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 		{
 			return false;
 		}
-	}
+	}*/
 	
 	/**
 	 * 判断该类型名称是否已被使用
