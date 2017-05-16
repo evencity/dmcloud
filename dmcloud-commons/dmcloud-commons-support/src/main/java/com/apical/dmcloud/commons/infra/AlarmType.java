@@ -8,9 +8,10 @@ package com.apical.dmcloud.commons.infra;
 public enum AlarmType
 {
 	/**
-	 * 普通--0
+	 * 不使用（作为占位符）由于枚举类型只能从0开始，由于mysql主键是从1开始的
+	 * 0
 	 */
-	Normal,
+	NoUse,
 	
 	/**
 	 * 报警--1

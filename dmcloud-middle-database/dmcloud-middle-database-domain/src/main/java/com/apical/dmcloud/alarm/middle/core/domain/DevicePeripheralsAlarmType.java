@@ -1,4 +1,4 @@
-package com.apical.dmcloud.alarm.core.domain;
+package com.apical.dmcloud.alarm.middle.core.domain;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.apical.dmcloud.AbstractIntegerIDEntity;
+import com.apical.dmcloud.middle.infra.AbstractIntegerIDEntity;
 
 /**
  * 外围设备报警类型信息类
@@ -177,6 +177,22 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 	}
 	
 	/**
+	 * 通过报警类型标记，来获取报警类型
+	 * @param typeBig 大类
+	 * @param typeMid 种类
+	 * @return 类型对象
+	 */
+	public static DevicePeripheralsAlarmType getIdByAlarmType(int typeBig, int typeMid)
+	{
+		String jpql = "select _type.id from DevicePeripheralsAlarmType _type where _type.typeBig=:typeBig and _type.typeMid=:typeMid";
+		DevicePeripheralsAlarmType t = getRepository().createJpqlQuery(jpql)
+				.addParameter("typeBig", typeBig)
+				.addParameter("typeMid", typeMid)
+				.singleResult();
+		return t;
+	}
+	
+	/**
 	 * 获取报警类型的数量
 	 * @return 类型数量
 	 */
@@ -197,7 +213,6 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 		String jpql = "select _type from DevicePeripheralsAlarmType _type";
 		List<DevicePeripheralsAlarmType> types = getRepository().createJpqlQuery(jpql.toString())
 				.list();
-		
 		return types;
 	}
 	

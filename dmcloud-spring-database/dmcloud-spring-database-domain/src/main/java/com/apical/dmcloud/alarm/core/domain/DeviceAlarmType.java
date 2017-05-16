@@ -158,7 +158,7 @@ public class DeviceAlarmType extends AbstractIntegerIDEntity
 	 * @param id 类型id
 	 * @return 删除是否成功
 	 */
-	public static boolean deleteById(long id)
+/*	public static boolean deleteById(int id)
 	{
 		String jpql = "delete from DeviceAlarmType _record where _record.id=:id";
 		int count = getRepository().createJpqlQuery(jpql.toString())
@@ -172,7 +172,7 @@ public class DeviceAlarmType extends AbstractIntegerIDEntity
 		{
 			return false;
 		}
-	}
+	}*/
 	
 	/**
 	 * 判断该类型名称是否已被使用
@@ -200,10 +200,10 @@ public class DeviceAlarmType extends AbstractIntegerIDEntity
 	 * 获取报警类型的数量
 	 * @return 类型数量
 	 */
-	public static long countAllAlarmType()
+	public static Integer countAllAlarmType()
 	{
 		String jpql = "select count(_type.id) from DeviceAlarmType _type";
-		Long count = getRepository().createJpqlQuery(jpql.toString())
+		Integer count = getRepository().createJpqlQuery(jpql.toString())
 				.singleResult();
 		return count;
 		

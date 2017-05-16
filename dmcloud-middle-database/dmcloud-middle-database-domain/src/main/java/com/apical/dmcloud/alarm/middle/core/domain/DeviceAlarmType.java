@@ -11,7 +11,7 @@ import com.apical.dmcloud.alarm.middle.core.AlarmTypeNotExistException;
 import com.apical.dmcloud.alarm.middle.core.NameIsExistedException;
 import com.apical.dmcloud.alarm.middle.core.UnsupportedAlarmTypeException;
 import com.apical.dmcloud.commons.infra.AlarmType;
-import com.apical.dmcloud.middle.infra.AbstractVersionEntity;
+import com.apical.dmcloud.middle.infra.AbstractIntegerIDEntity;
 import com.apical.dmcloud.middle.infra.Assert;
 
 /**
@@ -22,7 +22,7 @@ import com.apical.dmcloud.middle.infra.Assert;
 
 @Entity(name = "Middle.DeviceAlarmType")
 @Table(name = "cl_alarm_type")
-public class DeviceAlarmType extends AbstractVersionEntity
+public class DeviceAlarmType extends AbstractIntegerIDEntity
 {
 	/**
 	 * serialVersionUID = 5508335498457027100L;
@@ -158,7 +158,7 @@ public class DeviceAlarmType extends AbstractVersionEntity
 	 * @param id 类型id
 	 * @return 删除是否成功
 	 */
-	public static boolean deleteById(long id)
+	/*public static boolean deleteById(int id)
 	{
 		String jpql = "delete from Middle.DeviceAlarmType _record where _record.id=:id";
 		int count = getRepository().createJpqlQuery(jpql.toString())
@@ -172,14 +172,14 @@ public class DeviceAlarmType extends AbstractVersionEntity
 		{
 			return false;
 		}
-	}
+	}*/
 	
 	/**
 	 * 获取报警类型代理对象，即报警类型的字段都未从数据库中读取
 	 * @param typeId 类型id
 	 * @return 报警类型代理对象
 	 */
-	public static DeviceAlarmType getReferenceById(long typeId)
+	public static DeviceAlarmType getReferenceById(int typeId)
 	{
 		return load(DeviceAlarmType.class, typeId);
 	}
@@ -212,10 +212,10 @@ public class DeviceAlarmType extends AbstractVersionEntity
 	 * @return 类型ID
 	 * @throws AlarmTypeNotExistException 
 	 */
-	public static long getIdByAlarmType(int type) throws AlarmTypeNotExistException
+	public static Integer getIdByAlarmType(int type) throws AlarmTypeNotExistException
 	{
 		String jpql = "select _type.id from Middle.DeviceAlarmType _type where _type.type=:type";
-		Long id = getRepository().createJpqlQuery(jpql)
+		Integer id = getRepository().createJpqlQuery(jpql)
 				.addParameter("type", type)
 				.singleResult();
 		if(id == null)
@@ -232,7 +232,7 @@ public class DeviceAlarmType extends AbstractVersionEntity
 	 * @return 类型ID
 	 * @throws AlarmTypeNotExistException 
 	 */
-	public static long getIdByAlarmType(AlarmType type) throws AlarmTypeNotExistException
+	public static Integer getIdByAlarmType(AlarmType type) throws AlarmTypeNotExistException
 	{
 		int alarmType = type.ordinal();
 		
@@ -243,10 +243,10 @@ public class DeviceAlarmType extends AbstractVersionEntity
 	 * 获取报警类型的数量
 	 * @return 类型数量
 	 */
-	public static long countAllAlarmType()
+	public static Integer countAllAlarmType()
 	{
 		String jpql = "select count(_type.id) from Middle.DeviceAlarmType _type";
-		Long count = getRepository().createJpqlQuery(jpql.toString())
+		Integer count = getRepository().createJpqlQuery(jpql.toString())
 				.singleResult();
 		return count;
 	}
