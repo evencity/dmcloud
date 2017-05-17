@@ -24,11 +24,12 @@ import com.apical.dmcloud.middle.infra.Assert;
 @Table(name = "cl_alarm_type")
 public class DeviceAlarmType extends AbstractIntegerIDEntity
 {
-	/**
-	 * serialVersionUID = 5508335498457027100L;
-	 */
-	private static final long serialVersionUID = 5508335498457027100L;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2596659553263886475L;
+
 	/**
 	 * 报警类型标记
 	 */
