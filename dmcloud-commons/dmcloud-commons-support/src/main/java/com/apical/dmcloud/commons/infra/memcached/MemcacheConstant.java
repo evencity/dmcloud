@@ -1,5 +1,7 @@
 package com.apical.dmcloud.commons.infra.memcached;
 
+import com.apical.dmcloud.commons.infra.AliyunRegionIdConfig;
+
 public class MemcacheConstant
 {
 	//=================================================================
@@ -7,9 +9,18 @@ public class MemcacheConstant
 	/**
 	 * memcache服务器列表
 	 */
-	public static String ip_release = "2eb93f77c6614239.m.cnhzaliqshpub001.ocs.aliyuncs.com";
-	public static String[] MemcacheServers_Release = {"2eb93f77c6614239.m.cnhzaliqshpub001.ocs.aliyuncs.com:11211"};
+	public static String ip_release = "";
+	public static String[] MemcacheServers_Release = {};
 	
+	static {
+		if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.cnHangzhou)) {//杭州
+			ip_release = "2eb93f77c6614239.m.cnhzaliqshpub001.ocs.aliyuncs.com";
+			MemcacheServers_Release = new String[]{ip_release};
+		} else if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.apSsoutheast1)) {//亚太东南1
+			ip_release = "m-t4neb6caeff0a654.memcache.singapore.rds.aliyuncs.com";
+			MemcacheServers_Release = new String[]{ip_release};
+		}
+	}
 	/**
 	 * memcache服务器列表--本地测试memcache集群
 	 */

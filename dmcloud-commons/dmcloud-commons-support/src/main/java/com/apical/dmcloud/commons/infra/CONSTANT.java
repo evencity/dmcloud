@@ -92,7 +92,7 @@ public class CONSTANT
 	 */
 	public static String OSS_Region = "oss-cn-hangzhou";
 	public static String OSS_Endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
-	public static String OSS_Endpoint_Internal = "http://oss-cn-hangzhou-internal.aliyuncs.com";
+	public static String OSS_Endpoint_Internal = "";
 	
 	/**
 	 * 有效的 Access Key(包括AccessKeyId和AccessKeySecret)
@@ -110,7 +110,7 @@ public class CONSTANT
 	 * 文件命名规范
 	 */
 	//用于存储资源的bucket
-	public static String OSS_Bucket_DMCloud = "dmcloud-user";
+	public static String OSS_Bucket_DMCloud = "";
 	//dmcloud在oss上的访问域名
 	public static String OSS_DMCloud_CNAME = "http://" + OSS_Bucket_DMCloud + "." + OSS_Region + ".aliyuncs.com/";
 	//存储用户头像的目录名称
@@ -143,4 +143,22 @@ public class CONSTANT
 	public static String OSS_Directory_GPSFile = "gpsfile/device/";
 	
 	public static String OSS_Directory_ViolationImage = "image/ViolationImage/";
+	
+	
+	static {
+		if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.cnHangzhou)) {//杭州
+			OSS_Region = "oss-cn-hangzhou";
+			OSS_Endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
+			OSS_Endpoint_Internal = "http://oss-cn-hangzhou-internal.aliyuncs.com";
+			OSS_Bucket_DMCloud = "dmcloud-user";
+		} else if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.apSsoutheast1)) {//亚太东南1
+			OSS_Region = "oss-ap-southeast-1";
+			OSS_Endpoint = "http://ons.ap-southeast-1.aliyuncs.com";
+			OSS_Endpoint_Internal = "http://oss-ap-southeast-1-internal.aliyuncs.com";
+			OSS_Bucket_DMCloud = "dmcloud-user-sg";
+		}
+	}
+	
+	
+	
 }
