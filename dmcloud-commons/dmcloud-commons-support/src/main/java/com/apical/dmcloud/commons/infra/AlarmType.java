@@ -11,7 +11,7 @@ public enum AlarmType
 	 * 不使用（作为占位符）由于枚举类型只能从0开始，由于mysql主键是从1开始的
 	 * 0
 	 */
-	NoUse,
+	BoUse,
 	
 	/**
 	 * 报警--1
@@ -72,4 +72,39 @@ public enum AlarmType
 	 * 夜间行车报警--12
 	 */
 	NightDriving,
+	
+	/**
+	 * 急刹车报警-13
+	 */
+	Scram,
+	
+	/**
+	 * 急加速报警-14
+	 */
+	Accelerate,
+	
+	/**
+	 * 急转弯-15
+	 */
+	Suddenturn,
+	
+	/**
+	 * 停车车内移动监测报警-16
+	 */
+	CarInsideMoving,
+	
+	/**
+	 * 停车燃油减少防盗报警-17
+	 */
+	FuelDecrease,
+	
+	/**
+	 * 胎压超过阈值报警-18
+	 */
+	TirePressureExceed,
+	
+	/**
+	 * 胎压低于阈值报警-19
+	 */
+	TirePressureBelow,
 }

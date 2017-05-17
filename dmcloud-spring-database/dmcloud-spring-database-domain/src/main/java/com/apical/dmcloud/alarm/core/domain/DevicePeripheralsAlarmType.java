@@ -177,6 +177,21 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 	}
 	
 	/**
+	 * 通过报警类型标记，来获取报警类型
+	 * @param typeBig 大类
+	 * @param typeMid 种类
+	 * @return 类型对象
+	 */
+	public static DevicePeripheralsAlarmType getIdByAlarmType(short typeBig, short typeMid)
+	{
+		String jpql = "select _type from DevicePeripheralsAlarmType _type where _type.typeBig=:typeBig and _type.typeMid=:typeMid";
+		DevicePeripheralsAlarmType t = getRepository().createJpqlQuery(jpql)
+				.addParameter("typeBig", typeBig)
+				.addParameter("typeMid", typeMid)
+				.singleResult();
+		return t;
+	}
+	/**
 	 * 获取报警类型的数量
 	 * @return 类型数量
 	 */

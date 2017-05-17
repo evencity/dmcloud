@@ -4,17 +4,12 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
     http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
     <!-- jpa整合hibernate配置 -->
-    <!--   
-     Name属性用于定义持久化单元的名字 (name必选,空值也合法);  
-     transaction-type 指定事务类型(可选)   
---> 
 	<persistence-unit name="CloudJPA" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
 		<!-- 映射超类 -->
 		<class>com.apical.dmcloud.middle.infra.AbstractIDEntity</class>
 		<class>com.apical.dmcloud.middle.infra.AbstractVersionEntity</class>
-		<class>com.apical.dmcloud.middle.infra.AbstractIntegerIDEntity</class>
 		
 		<!-- 行车资源 -->
 		<class>com.apical.dmcloud.storage.middle.core.domain.Resource</class>
@@ -30,8 +25,6 @@
 		<class>com.apical.dmcloud.driving.middle.core.domain.DeviceDrivingRecord</class>
 		
 		<!-- 报警信息 -->
-		<class>com.apical.dmcloud.alarm.middle.core.domain.DevicePeripheralsAlarmRecord</class>
-		<class>com.apical.dmcloud.alarm.middle.core.domain.DevicePeripheralsAlarmType</class>
 		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceLoginRecord</class>
 		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmRecord</class>
 		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmType</class>

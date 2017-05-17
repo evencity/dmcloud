@@ -14,7 +14,6 @@ import com.apical.dmcloud.middle.infra.AbstractIntegerIDEntity;
  * @author lgx
  * 2015-5-15
  */
-
 @Entity
 @Table(name = "cl_alarm_type_peripherals")
 public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
@@ -127,7 +126,7 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 	 * @param id 类型id
 	 * @return 删除是否成功
 	 */
-	public static boolean deleteById(int id) {
+	/*public static boolean deleteById(int id) {
 		String jpql = "delete from DevicePeripheralsAlarmType _record where _record.id=:id";
 		int count = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("id", id)
@@ -140,7 +139,7 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 			return false;
 		}
 	}
-	
+	*/
 	/**
 	 * 判断该类型名称是否已被使用
 	 * @param name 类型名称
@@ -182,9 +181,9 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 	 * @param typeMid 种类
 	 * @return 类型对象
 	 */
-	public static DevicePeripheralsAlarmType getIdByAlarmType(int typeBig, int typeMid)
+	public static DevicePeripheralsAlarmType getIdByAlarmType(short typeBig, short typeMid)
 	{
-		String jpql = "select _type.id from DevicePeripheralsAlarmType _type where _type.typeBig=:typeBig and _type.typeMid=:typeMid";
+		String jpql = "select _type from DevicePeripheralsAlarmType _type where _type.typeBig=:typeBig and _type.typeMid=:typeMid";
 		DevicePeripheralsAlarmType t = getRepository().createJpqlQuery(jpql)
 				.addParameter("typeBig", typeBig)
 				.addParameter("typeMid", typeMid)

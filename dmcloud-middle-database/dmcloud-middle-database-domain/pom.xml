@@ -17,13 +17,33 @@
   </properties>
   <profiles>
   	<!-- MYSQL DB -->
-		
+   	<profile>
+		<id>MySQL_SG</id>
+		<activation>
+			<activeByDefault>false</activeByDefault>
+		</activation>
+		<properties>
+			<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
+			<hibernate.show_sql>false</hibernate.show_sql>
+			<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
+			<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
+			<db.connectionURL>jdbc:mysql://rm-t4nz2pn1cjyy3t932.mysql.singapore.rds.aliyuncs.com:3306/dmclouddb?useUnicode=true&amp;characterEncoding=UTF-8
+			</db.connectionURL>
+			<db.username>dmcloud</db.username>
+			<db.password>wSqkj$ZwIEnXGsPm5Mq=</db.password>
+			<db.Type>MYSQL</db.Type>
+			<db.testsql>select 1</db.testsql>
+			<db.generateDdl>false</db.generateDdl><!-- 必须得为false，否则会改表结构 -->
+			<db.groupId>mysql</db.groupId>
+			<db.artifactId>mysql-connector-java</db.artifactId>
+		</properties>
+	</profile>
       <profile>
-			<id>MySQL_Release</id>
+			<id>MySQL_HZ</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-		<properties>
+			<properties>
 				<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
 				<hibernate.show_sql>false</hibernate.show_sql>
 				<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
