@@ -24,6 +24,8 @@ import javax.persistence.ManyToMany;
  * 它代表一系列可执行操作或责任，因此它是授权的粗粒度。
  *
  * @author luzhao
+ * 
+ * 这个不知道干什么的，表数据是空的，说明没有使用到
  */
 
 @Entity
