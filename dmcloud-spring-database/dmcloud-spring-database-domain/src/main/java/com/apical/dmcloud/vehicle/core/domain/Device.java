@@ -421,8 +421,9 @@ public class Device extends SecurityAbstractEntity
 	 * @param vehicleId 车辆id
 	 * @return 设备信息
 	 */
-	public static List<Device> getByVehicleId(long vehicleId) {	
-		String jpql = "select _device from Device _device where _device.vehicle.id = :id";
+	public static List<Device> getByVehicleId(Long vehicleId) {
+		//String jpql = "select _device from Device _device where _device.vehicle.id = :id";
+		String jpql = "select _device from Device _device where _device.id = :id";
 		List<Device> devices = getRepository().createJpqlQuery(jpql.toString())
 							.addParameter("id", vehicleId)
 							.list();

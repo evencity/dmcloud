@@ -153,7 +153,7 @@ public class CONSTANT
 			OSS_Bucket_DMCloud = "dmcloud-user";
 		} else if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.apSsoutheast1)) {//亚太东南1
 			OSS_Region = "oss-ap-southeast-1";
-			OSS_Endpoint = "http://ons.ap-southeast-1.aliyuncs.com";
+			OSS_Endpoint = "http://oss.ap-southeast-1.aliyuncs.com";
 			OSS_Endpoint_Internal = "http://oss-ap-southeast-1-internal.aliyuncs.com";
 			OSS_Bucket_DMCloud = "dmcloud-user-sg";
 		}

@@ -12,5 +12,6 @@ public class AliyunRegionIdConfig {
 	
 	
 	public static final String regionId = apSsoutheast1;//配置这项就可以指定使用哪个regionId
+	//public static final String regionId = cnHangzhou;//配置这项就可以指定使用哪个regionId
 	
 }
