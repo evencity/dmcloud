@@ -112,7 +112,7 @@ public class CONSTANT
 	//用于存储资源的bucket
 	public static String OSS_Bucket_DMCloud = "";
 	//dmcloud在oss上的访问域名
-	public static String OSS_DMCloud_CNAME = "http://" + OSS_Bucket_DMCloud + "." + OSS_Region + ".aliyuncs.com/";
+	public static String OSS_DMCloud_CNAME = "";
 	//存储用户头像的目录名称
 	public static String OSS_Directory_UserPhoto = "image/userPhoto/";
 	//存储用户图片的目录名称
@@ -154,9 +154,11 @@ public class CONSTANT
 		} else if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.apSsoutheast1)) {//亚太东南1
 			OSS_Region = "oss-ap-southeast-1";
 			OSS_Endpoint = "http://oss.ap-southeast-1.aliyuncs.com";
-			OSS_Endpoint_Internal = "http://oss-ap-southeast-1-internal.aliyuncs.com";
+			OSS_Endpoint_Internal = "http://vpc100-oss-ap-southeast-1.aliyuncs.com";
 			OSS_Bucket_DMCloud = "dmcloud-user-sg";
 		}
+		
+		OSS_DMCloud_CNAME = "http://" + OSS_Bucket_DMCloud + "." + OSS_Region + ".aliyuncs.com/";
 	}
 	
 	

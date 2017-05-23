@@ -27,7 +27,7 @@
 			<hibernate.show_sql>false</hibernate.show_sql>
 			<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
 			<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
-			<db.connectionURL>jdbc:mysql://rm-t4nz2pn1cjyy3t932.mysql.singapore.rds.aliyuncs.com:3306/dmclouddb?useUnicode=true&amp;characterEncoding=UTF-8
+			<db.connectionURL>jdbc:mysql://rm-t4nz2pn1cjyy3t932.mysql.singapore.rds.aliyuncs.com:3306/dmclouddb?useUnicode=true&amp;amp;characterEncoding=UTF-8
 			</db.connectionURL>
 			<db.username>dmcloud</db.username>
 			<db.password>wSqkj$ZwIEnXGsPm5Mq=</db.password>
