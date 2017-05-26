@@ -397,7 +397,7 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	public static long countAllByVehicleIdAndTimerange(long vehicleId, int type,
 			Date startDate, Date endDate)
 	{
-		String jpql = "select count(_record.id) from DeviceAlarmRecord _record  left join fetch _record.deviceAlarmType where"
+		String jpql = "select count(_record.id) from DeviceAlarmRecord _record where"
 				+ " _record.vehicleId=:vehicleId";
 				if (type != -1) {
 					jpql += " and _record.type=:type";
