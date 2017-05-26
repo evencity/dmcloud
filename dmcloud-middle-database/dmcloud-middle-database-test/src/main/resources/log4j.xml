@@ -14,7 +14,7 @@
 	</category>
 
     <appender name="DruidDataSourceStat" class="org.apache.log4j.DailyRollingFileAppender">       
-        <param name="File" value="F:/DruidDataSourceStatLogger.log" />         
+        <param name="File" value="D:/usr/DruidDataSourceStatLogger.log" />         
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />         
         <layout class="org.apache.log4j.PatternLayout">       
          <param name="ConversionPattern"         

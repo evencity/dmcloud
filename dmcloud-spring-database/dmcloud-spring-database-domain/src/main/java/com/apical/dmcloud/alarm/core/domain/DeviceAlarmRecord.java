@@ -3,11 +3,17 @@ package com.apical.dmcloud.alarm.core.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.dayatang.domain.JpqlQuery;
 
 import com.apical.dmcloud.AbstractIDEntity;
 import com.apical.dmcloud.alarm.core.AlarmRecordNotExistException;
@@ -34,6 +40,10 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	 */
 	@Column(name = "DEVICE_ID")
 	private Long deviceId = null;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "TYPE", updatable=false, insertable=false)
+	private DeviceAlarmType deviceAlarmType;
 	
 	/**
 	 * 车辆id号
@@ -203,6 +213,14 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	public void setAlarmContent(String alarmContent)
 	{
 		this.alarmContent = alarmContent;
+	}
+
+	public DeviceAlarmType getDeviceAlarmType() {
+		return deviceAlarmType;
+	}
+
+	public void setDeviceAlarmType(DeviceAlarmType deviceAlarmType) {
+		this.deviceAlarmType = deviceAlarmType;
 	}
 
 	/**
@@ -379,15 +397,19 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	public static long countAllByVehicleIdAndTimerange(long vehicleId, int type,
 			Date startDate, Date endDate)
 	{
-		String jpql = "select count(_record.id) from DeviceAlarmRecord _record where"
-				+ " _record.vehicleId=:vehicleId"
-				//+ " and _record.type=:type"
-				+ " and _record.alarmTime > :beginDate"
-				+ " and _record.alarmTime < :endDate";
-		Long count = getRepository().createJpqlQuery(jpql.toString())
-				.addParameter("vehicleId", vehicleId)
-				//.addParameter("type", type)
-				.addParameter("beginDate", startDate)
+		String jpql = "select count(_record.id) from DeviceAlarmRecord _record  left join fetch _record.deviceAlarmType where"
+				+ " _record.vehicleId=:vehicleId";
+				if (type != -1) {
+					jpql += " and _record.type=:type";
+				}
+				jpql += " and _record.alarmTime > :beginDate";
+				jpql += " and _record.alarmTime < :endDate";
+				JpqlQuery addParameter = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("vehicleId", vehicleId);
+				if (type != -1) {
+					addParameter.addParameter("type", type);
+				}
+		Long count = addParameter.addParameter("beginDate", startDate)
 				.addParameter("endDate", endDate)
 				.singleResult();
 		
@@ -434,20 +456,23 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 			int type, Date startDate, Date endDate,
 			int pageCount, int pageSize)
 	{
-		String jpql = "select _record from DeviceAlarmRecord _record"
-				+ " where _record.vehicleId=:vehicleId"
-				+ " and _record.type=:type"
-				+ " and _record.alarmTime > :beginDate"
-				+ " and _record.alarmTime < :endDate";
-		List<DeviceAlarmRecord> records = getRepository().createJpqlQuery(jpql)
-				.addParameter("vehicleId", vehicleId)
-				.addParameter("type", type)
-				.addParameter("beginDate", startDate)
+		String jpql = "select _record from DeviceAlarmRecord _record left join fetch _record.deviceAlarmType"
+				+ " where _record.vehicleId=:vehicleId";
+				if (type != -1) {
+					jpql += " and _record.type=:type";
+				}
+				jpql += " and _record.alarmTime > :beginDate";
+				jpql += " and _record.alarmTime < :endDate";
+				JpqlQuery addParameter = getRepository().createJpqlQuery(jpql).addParameter("vehicleId", vehicleId);
+				if (type != -1) {
+					addParameter.addParameter("type", type);
+				}
+		List<DeviceAlarmRecord> records = 
+				addParameter.addParameter("beginDate", startDate)
 				.addParameter("endDate", endDate)
 				.setMaxResults(pageSize)
 				.setFirstResult((pageCount - 1) * pageSize)
 				.list();
-		
 		return records;
 	}
 	
@@ -463,8 +488,10 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	public static long countAllByVehicleIdAndTimerange(long vehicleId, AlarmType alarmType,
 			Date startDate, Date endDate)
 	{
-		int type = alarmType.ordinal();
-		
+		int type = -1;
+		if (alarmType != null) {
+			type = alarmType.ordinal();
+		}
 		return countAllByVehicleIdAndTimerange(vehicleId, type, startDate, endDate);
 	}
 	
@@ -498,8 +525,10 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 			AlarmType alarmType, Date startDate, Date endDate,
 			int pageCount, int pageSize)
 	{
-		int type = alarmType.ordinal();
-		
+		int type = -1;
+		if (alarmType != null) {
+			type = alarmType.ordinal();
+		}
 		return queryAllByVehicleIdAndTimerangeInPage(vehicleId, type, startDate, endDate,
 				pageCount, pageSize);
 	}
