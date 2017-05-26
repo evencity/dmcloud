@@ -381,12 +381,12 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	{
 		String jpql = "select count(_record.id) from DeviceAlarmRecord _record where"
 				+ " _record.vehicleId=:vehicleId"
-				+ " and _record.type=:type"
+				//+ " and _record.type=:type"
 				+ " and _record.alarmTime > :beginDate"
 				+ " and _record.alarmTime < :endDate";
 		Long count = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("vehicleId", vehicleId)
-				.addParameter("type", type)
+				//.addParameter("type", type)
 				.addParameter("beginDate", startDate)
 				.addParameter("endDate", endDate)
 				.singleResult();

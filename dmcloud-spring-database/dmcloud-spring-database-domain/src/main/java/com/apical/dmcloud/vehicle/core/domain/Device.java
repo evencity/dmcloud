@@ -619,7 +619,7 @@ public class Device extends SecurityAbstractEntity
 		}
 		
 		if(!StringUtils.isBlank(model)){
-			jpql.append(" _device.brand like :model and");
+			jpql.append(" _device.model like :model and");
 			conditions.put("model","%" + model + "%");
 		}
 		jpql.append(" 1=1");

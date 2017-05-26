@@ -92,6 +92,7 @@ public class CONSTANT
 	 */
 	public static String OSS_Region = "oss-cn-hangzhou";
 	public static String OSS_Endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
+	public static String OSS_Endpoint2 = "oss-cn-hangzhou.aliyuncs.com";
 	public static String OSS_Endpoint_Internal = "";
 	
 	/**
@@ -149,11 +150,13 @@ public class CONSTANT
 		if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.cnHangzhou)) {//杭州
 			OSS_Region = "oss-cn-hangzhou";
 			OSS_Endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
+			OSS_Endpoint2="oss-cn-hangzhou.aliyuncs.com";
 			OSS_Endpoint_Internal = "http://oss-cn-hangzhou-internal.aliyuncs.com";
 			OSS_Bucket_DMCloud = "dmcloud-user";
 		} else if (AliyunRegionIdConfig.regionId.equals(AliyunRegionIdConfig.apSsoutheast1)) {//亚太东南1
 			OSS_Region = "oss-ap-southeast-1";
 			OSS_Endpoint = "http://oss.ap-southeast-1.aliyuncs.com";
+			OSS_Endpoint2="oss.ap-southeast-1.aliyuncs.com";
 			OSS_Endpoint_Internal = "http://vpc100-oss-ap-southeast-1.aliyuncs.com";
 			OSS_Bucket_DMCloud = "dmcloud-user-sg";
 		}
