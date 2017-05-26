@@ -1,9 +1,11 @@
 package com.apical.dmcloud.middle.database.test;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 
+import com.apical.dmcloud.commons.infra.DateUtils;
 import com.apical.dmcloud.rule.middle.core.RuleAssignmentException;
 import com.apical.dmcloud.rule.middle.core.domain.DrivingArea;
 import com.apical.dmcloud.rule.middle.core.domain.DrivingAreaGPSData;
@@ -22,6 +24,15 @@ import com.apical.dmcloud.rule.middle.core.domain.RuleTakeVideo;
 
 public class TestRule
 {
+	@Test
+	public void testRuleSubSection() {
+		RuleSubSection ruleSubSection = RuleSubSection.get(RuleSubSection.class, 8L);
+			boolean need = DateUtils.isBetweenInDay(new Date(),
+					ruleSubSection.getBeginTime(), ruleSubSection.getEndTime());
+		
+		System.out.println("ddddddddddddd"+need);
+	}
+	
 //	@Test
 //	public void testQueryRule()
 //	{

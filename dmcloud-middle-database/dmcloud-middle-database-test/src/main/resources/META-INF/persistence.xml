@@ -4,12 +4,17 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
     http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
     <!-- jpa整合hibernate配置 -->
+    <!--   
+     Name属性用于定义持久化单元的名字 (name必选,空值也合法);  
+     transaction-type 指定事务类型(可选)   
+--> 
 	<persistence-unit name="CloudJPA" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
 		<!-- 映射超类 -->
 		<class>com.apical.dmcloud.middle.infra.AbstractIDEntity</class>
 		<class>com.apical.dmcloud.middle.infra.AbstractVersionEntity</class>
+		<class>com.apical.dmcloud.middle.infra.AbstractIntegerIDEntity</class>
 		
 		<!-- 行车资源 -->
 		<class>com.apical.dmcloud.storage.middle.core.domain.Resource</class>
@@ -25,6 +30,8 @@
 		<class>com.apical.dmcloud.driving.middle.core.domain.DeviceDrivingRecord</class>
 		
 		<!-- 报警信息 -->
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DevicePeripheralsAlarmRecord</class>
+		<class>com.apical.dmcloud.alarm.middle.core.domain.DevicePeripheralsAlarmType</class>
 		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceLoginRecord</class>
 		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmRecord</class>
 		<class>com.apical.dmcloud.alarm.middle.core.domain.DeviceAlarmType</class>
@@ -84,9 +91,9 @@
 			<property name="hibernate.connection.autoReconnectForPools" value="true"/>
 			<property name="hibernate.connection.is-connection-validation-required" value="true"/>
 			<property name="hibernate.connection.provider_class" value="com.alibaba.druid.support.hibernate.DruidConnectionProvider"/>
-			<property name="url" value="${db.connectionURL}" />
-			<property name="username" value="${db.username}" />
-			<property name="password" value="${db.password}" />
+			<property name="url" value="jdbc:mysql://192.168.0.236:3306/dmclouddb?useUnicode=true&amp;characterEncoding=UTF-8" />
+			<property name="username" value="root" />
+			<property name="password" value="root" />
 			<!-- 过滤器 -->
 			<property name="filters" value="stat,slf4j" />
 			<!-- 配置初始化大小、最小、最大 -->
