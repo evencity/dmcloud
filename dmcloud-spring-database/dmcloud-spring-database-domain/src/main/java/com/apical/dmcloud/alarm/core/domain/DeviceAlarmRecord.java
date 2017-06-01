@@ -428,14 +428,23 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	public static List<DeviceAlarmRecord> queryAllByVehicleIdAndTimerange(long vehicleId, int type,
 			Date startDate, Date endDate)
 	{
-		String jpql = "select _record from DeviceAlarmRecord _record"
+		String jpql = "select _record from DeviceAlarmRecord _record left join fetch _record.deviceAlarmType"
+				+ " where _record.vehicleId=:vehicleId";
+				if (type != -1) {
+					jpql += " and _record.type=:type";
+				}
+				jpql += " and _record.alarmTime > :beginDate";
+				jpql += " and _record.alarmTime < :endDate";
+				JpqlQuery addParameter = getRepository().createJpqlQuery(jpql).addParameter("vehicleId", vehicleId);
+				if (type != -1) {
+					addParameter.addParameter("type", type);
+				}
+		/*String jpql = "select _record from DeviceAlarmRecord _record"
 				+ " where _record.vehicleId=:vehicleId"
 				+ " and _record.type=:type"
 				+ " and _record.alarmTime > :beginDate"
-				+ " and _record.alarmTime < :endDate";
-		List<DeviceAlarmRecord> records = getRepository().createJpqlQuery(jpql)
-				.addParameter("vehicleId", vehicleId)
-				.addParameter("type", type)
+				+ " and _record.alarmTime < :endDate";*/
+		List<DeviceAlarmRecord> records = addParameter
 				.addParameter("beginDate", startDate)
 				.addParameter("endDate", endDate)
 				.list();
@@ -507,8 +516,10 @@ public class DeviceAlarmRecord extends AbstractIDEntity
 	public static List<DeviceAlarmRecord> queryAllByVehicleIdAndTimerange(long vehicleId, AlarmType alarmType,
 			Date startDate, Date endDate)
 	{
-		int type = alarmType.ordinal();
-		
+		int type = -1;
+		if (alarmType != null) {
+			type = alarmType.ordinal();
+		}
 		return queryAllByVehicleIdAndTimerange(vehicleId, type, startDate, endDate);
 	}
 	

@@ -154,7 +154,7 @@ public class Device extends SecurityAbstractEntity
 		Vehicle vehicle = this.getVehicle();
 		if(vehicle != null){
 			//更新缓存信息
-			MiddleEntryCacheService.saveVehicle_Binded_Device(this.getId(), vehicle.getId());
+			//MiddleEntryCacheService.saveVehicle_Binded_Device(this.getId(), vehicle.getId());
 		}
 		super.save();
 		
