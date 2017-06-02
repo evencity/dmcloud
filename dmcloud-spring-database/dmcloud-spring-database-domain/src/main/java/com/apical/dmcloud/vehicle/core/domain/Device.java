@@ -20,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.dayatang.utils.Assert;
 import org.openkoala.security.core.domain.SecurityAbstractEntity;
 
-import com.apical.dmcloud.commons.infra.memcached.MiddleEntryCacheService;
 import com.apical.dmcloud.vehicle.core.DeviceIsExistException;
 import com.apical.dmcloud.vehicle.core.DeviceNotExistException;
 import com.apical.dmcloud.vehicle.core.VehicleNotExistException;
