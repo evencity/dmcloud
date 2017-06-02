@@ -111,6 +111,9 @@ public class Device extends SecurityAbstractEntity
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "COM_ID")
 	private Company company;
+
+	@JoinColumn(name = "COM_ID", updatable=false, insertable=false)
+	private Long companyId;
 	
 	/**
 	 * 设备所属的车辆
@@ -639,5 +642,13 @@ public class Device extends SecurityAbstractEntity
 				.addParameter("P2PUUID", P2PUUID)
 				.singleResult();
 		return device;
+	}
+
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
 }
