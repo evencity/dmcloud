@@ -111,7 +111,7 @@ public class Device extends SecurityAbstractEntity
 	@JoinColumn(name = "COM_ID")
 	private Company company;
 
-	@JoinColumn(name = "COM_ID", updatable=false, insertable=false)
+	@Column(name = "COM_ID", updatable=false, insertable=false)
 	private Long companyId;
 	
 	/**
