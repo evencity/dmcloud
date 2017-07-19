@@ -30,9 +30,9 @@ public class TestDevice extends KoalaBaseSpringTestCase
 			System.out.println(u.getDeviceId());
 			System.out.println(u.getLoginIP());
 		}*/
-		long count = Device.countAllDevicesInByKeyWords("云智汇","012", "", "", "");
+		long count = Device.countAllDevicesInByKeyWords(null,null,"云智汇","012", "", "", "");
 		System.err.println(count);
-		List<Device> d = Device.queryAllDevicesInByKeyWordsInPage("云智汇","012", "", "", "", 1, 10);
+		List<Device> d = Device.queryAllDevicesInByKeyWordsInPage(null,null,null,null, "", "", "", 1, 10);
 		System.err.println(d.size());
 	}
 }

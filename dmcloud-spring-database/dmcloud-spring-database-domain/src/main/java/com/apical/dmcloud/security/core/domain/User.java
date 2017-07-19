@@ -49,7 +49,12 @@ public class User extends SecurityAbstractEntity {
 	/**
 	 * 初始化密码：888888
 	 */
-	private static final String INIT_PASSWORD = "888888";
+	public static final String INIT_PASSWORD = "888888";
+	
+	/**
+	 * 子账户初始化密码：666666
+	 */
+	public static final String INIT_PASSWORD_SUB_ACCOUNT = "666666";
 	
 	/**
 	 * 名称
@@ -146,6 +151,12 @@ public class User extends SecurityAbstractEntity {
 	@Column(name = "COM_ID")
 	private Long companyId;
 	
+	/**
+	 * 用户主账户id
+	 */
+	@Column(name = "PID")
+	private Long pId;
+	
 	public User() {
 	}
 	
@@ -162,6 +173,26 @@ public class User extends SecurityAbstractEntity {
 		this.userAccount = userAccount;
 		this.salt = UUID.randomUUID().toString();
 		this.password = encryptPassword(INIT_PASSWORD);
+	}
+	
+	public User(String name, String userAccount,Boolean isSubAccount) {
+		checkName(name);
+		checkUserAccount(userAccount);
+		
+		if(isExistUserAccount(userAccount))
+		{
+			throw new UserAccountIsExistedException("user userAccount is existed.");
+		}
+		
+		this.name = name;
+		this.userAccount = userAccount;
+		this.salt = UUID.randomUUID().toString();
+		if(isSubAccount){
+			this.password = encryptPassword(INIT_PASSWORD_SUB_ACCOUNT);
+		}else{
+			this.password = encryptPassword(INIT_PASSWORD);
+		}
+		
 	}
 	
 	public User(String name, String userAccount, String password) {
@@ -209,7 +240,7 @@ public class User extends SecurityAbstractEntity {
 		Assert.notBlank(region, "region cannot be empty.");
 	}
 	
-	protected String encryptPassword(String password) {
+	public String encryptPassword(String password) {
 	    return getPasswordEncryptService().encryptPassword(password, salt + userAccount);
 	}
 	
@@ -489,6 +520,14 @@ public class User extends SecurityAbstractEntity {
 	public void resetPassword() {
 		User user = User.get(User.class, this.getId());
 	    user.password = encryptPassword(INIT_PASSWORD);
+	}
+	
+	/**
+	 * 重置用户密码
+	 */
+	public void resetPassword_SubAccount() {
+		User user = User.get(User.class, this.getId());
+	    user.password = encryptPassword(INIT_PASSWORD_SUB_ACCOUNT);
 	}
 	
 	/**
@@ -985,6 +1024,14 @@ public class User extends SecurityAbstractEntity {
 		Long cId= getRepository().createJpqlQuery(jpql)
 				.addParameter("userId", userId).singleResult();
 		return cId;
+	}
+
+	public Long getpId() {
+		return pId;
+	}
+
+	public void setpId(Long pId) {
+		this.pId = pId;
 	}
 	
 }

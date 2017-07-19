@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -121,10 +122,31 @@ public class Device extends SecurityAbstractEntity
 	@JoinColumn(name = "VEHICLE_ID")
 	private Vehicle vehicle;
 	
+	@Column(name = "VEHICLE_ID", updatable=false, insertable=false)
+	private Long vehicleId;
 	
+	/*@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "P2PUUID_ID")
+	private P2PUUID p2puuid;
+	
+	public P2PUUID getP2puuid() {
+		return p2puuid;
+	}
+
+	public void setP2puuid(P2PUUID p2puuid) {
+		this.p2puuid = p2puuid;
+	}*/
+
 	/**p2p uuid**/
 	@Column(name = "P2PUUID",length=64,nullable=true,unique=true)
 	private String P2PUUID;
+	
+	/**
+	 * 创建时间
+	 */
+	@Temporal(TemporalType.DATE)
+	@Column(name = "CREATE_TIME")
+	private Date createTime;
 	
 	/**获取P2pUUId **/
 	public String getP2PUUID() {
@@ -149,6 +171,15 @@ public class Device extends SecurityAbstractEntity
 		}
 		
 		this.number = number;
+	}
+	
+
+	public Device(String number, String type, String brand, String model) {
+		super();
+		this.number = number;
+		this.type = type;
+		this.brand = brand;
+		this.model = model;
 	}
 
 	@Override
@@ -369,6 +400,23 @@ public class Device extends SecurityAbstractEntity
 		this.vehicle = vehicle;
 	}
 	
+	public Long getVehicleId() {
+		return vehicleId;
+	}
+
+	public void setVehicleId(Long vehicleId) {
+		this.vehicleId = vehicleId;
+	}
+
+	
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
 	/**
 	 * 使用断言方式检测设备编号是否为空
 	 * @param number 设备编号
@@ -400,6 +448,8 @@ public class Device extends SecurityAbstractEntity
     		return true;
     	}
 	}
+	
+	
 	
 	 /**
      * 通过设备编号来获取设备id
@@ -542,9 +592,17 @@ public class Device extends SecurityAbstractEntity
 	 * @param pageSize
 	 * @return  List<Device>
 	 */
-	public static List<Device> queryAllDevicesInByKeyWordsInPage(String companyName, String number, String type,String brand,String model,int pageCount, int pageSize) {
-		StringBuilder jpql = new StringBuilder("select _device from Device _device left join fetch _device.vehicle left join fetch _device.company  where");
-		Map<String,Object> conditions = new HashMap<String,Object>();			
+	public static List<Device> queryAllDevicesInByKeyWordsInPage(Long companyId,String p2puuid, String companyName, String number, String type,String brand,String model,int pageCount, int pageSize) {
+		StringBuilder jpql = new StringBuilder("select _device from Device _device left join fetch _device.vehicle left join fetch _device.company   where");
+		Map<String,Object> conditions = new HashMap<String,Object>();	
+		if(companyId != null){
+			jpql.append(" _device.company.id = :companyId and");
+			conditions.put("companyId", companyId);
+		}
+		if(!StringUtils.isBlank(p2puuid)){
+			jpql.append(" _device.P2PUUID like :P2PUUID and");
+			conditions.put("P2PUUID","%" +p2puuid + "%");
+		}
 		if(!StringUtils.isBlank(companyName)){
 			jpql.append(" _device.company.name = :companyName and");
 			conditions.put("companyName", companyName);
@@ -592,15 +650,24 @@ public class Device extends SecurityAbstractEntity
 	/**
 	 * 统计符合关键字查找的设备数量
 	 * @param companyName 公司名
+	 * @param p2puuid
 	 * @param number 设备编号
 	 * @param type  类型
 	 * @param brand  品牌
 	 * @param model  型号
 	 * @return  long 设备数量
 	 */
-	public static long countAllDevicesInByKeyWords(String companyName, String number, String type,String brand,String model) {
+	public static long countAllDevicesInByKeyWords(Long companyId, String p2puuid,String companyName, String number, String type,String brand,String model) {
 		StringBuilder jpql = new StringBuilder("select count(_device.id) from Device _device where");
-		Map<String,Object> conditions = new HashMap<String,Object>();			
+		Map<String,Object> conditions = new HashMap<String,Object>();	
+		if(companyId != null){
+			jpql.append(" _device.company.id = :companyId and");
+			conditions.put("companyId", companyId);
+		}
+		if(!StringUtils.isBlank(p2puuid)){
+			jpql.append(" _device.P2PUUID like :P2PUUID and");
+			conditions.put("P2PUUID","%" +p2puuid + "%");
+		}
 		if(!StringUtils.isBlank(companyName)){
 			jpql.append(" _device.company.name = :companyName and");
 			conditions.put("companyName", companyName);
@@ -650,4 +717,125 @@ public class Device extends SecurityAbstractEntity
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
+	
+	/**
+	 * 批量判断该名称是否已被使用
+	 * 
+	 * @param name
+	 *            名称
+	 * @return 存在的记录
+	 */
+	public static List<String> isExistDeviceNumbers(Set<String> numbers) {
+		StringBuilder jpql = new StringBuilder("select _device.number from Device _device ");
+		Map<String,Object> conditions = new HashMap<String,Object>();	
+		if(numbers != null && numbers.size() > 0){
+			jpql.append("where _device.number in(");
+			int i = 0;
+			for(String s : numbers){
+				jpql.append(":number"+i+",");
+				conditions.put("number"+i, s);
+				i ++;
+			}
+			jpql.delete(jpql.length()-1, jpql.length()).append(")");
+		}
+		List<String> p = getRepository().createJpqlQuery(jpql.toString()).setParameters(conditions).list();
+		return p;
+	}
+
+	public static Integer saveBatch(List<Device> list) {
+		int count = 0;
+		if(list != null && list.size() > 0){
+			StringBuilder sql = new StringBuilder("insert into cl_device ("
+					+ "NUMBER,"
+					+ "TIME,"
+					+ "TERM,"
+					+ "INSTALL,"
+					+ "IS_INSTALL,"
+					+ "DISK,"
+					+ "CAMERA,"
+					+ "TYPE,"
+					+ "BRAND,"
+					+ "MODEL,"
+					+ "FIRMWARE,"
+					+ "P2PUUID"
+					+ ") values ");
+			Map<String,Object> conditions = new HashMap<String,Object>();	
+			int i = 0;
+			for(Device device : list){
+				sql.append("(:NUMBER").append(i).append(",");
+				sql.append(":TIME").append(i).append(",");
+				sql.append(":TERM").append(i).append(",");
+				sql.append(":INSTALL").append(i).append(",");
+				sql.append(":IS_INSTALL").append(i).append(",");
+				sql.append(":DISK").append(i).append(",");
+				sql.append(":CAMERA").append(i).append(",");
+				sql.append(":TYPE").append(i).append(",");
+				sql.append(":BRAND").append(i).append(",");
+				sql.append(":MODEL").append(i).append(",");
+				sql.append(":FIRMWARE").append(i).append(",");
+				sql.append(":P2PUUID").append(i).append("),");
+				conditions.put("NUMBER"+i,device.getNumber());
+				conditions.put("TIME"+i, device.getServerTime());
+				conditions.put("TERM"+i, device.getTerm());
+				conditions.put("INSTALL"+i, device.getInstallTime());
+				conditions.put("IS_INSTALL"+i,device.getIsInstalled());
+				conditions.put("DISK"+i,device.getDiskCount());
+				conditions.put("CAMERA"+i,device.getCameraCount());
+				
+				conditions.put("TYPE"+i,device.getType());
+				conditions.put("BRAND"+i,device.getBrand());
+				conditions.put("MODEL"+i,device.getModel());
+				conditions.put("FIRMWARE"+i,device.getFirmwareVersion());
+				conditions.put("P2PUUID"+i,device.getP2PUUID());
+				i ++;
+			}
+			sql.delete(sql.length()-1, sql.length());
+			count = SecurityAbstractEntity.getRepository().createSqlQuery(sql.toString())
+					.setParameters(conditions)
+					.executeUpdate();
+			return count;
+		}
+		return count;
+	}
+	public static Device getDeviceByNumber(String number) {
+		String jpql = "select _device from Device _device where _device.number= :number";
+		Device device = getRepository().createJpqlQuery(jpql.toString())
+    			.addParameter("number", number)
+    			.singleResult();
+    	return device;
+	}
+	public static Device getUnbindingDeviceByNumber(String number) {
+		String jpql = "select _device from Device _device where _device.number= :number and _device.vehicleId = NULL";
+		Device device = getRepository().createJpqlQuery(jpql.toString())
+    			.addParameter("number", number)
+    			.singleResult();
+    	return device;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((number == null) ? 0 : number.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Device other = (Device) obj;
+		if (number == null) {
+			if (other.number != null)
+				return false;
+		} else if (!number.equals(other.number))
+			return false;
+		return true;
+	}
+
+
+	
 }

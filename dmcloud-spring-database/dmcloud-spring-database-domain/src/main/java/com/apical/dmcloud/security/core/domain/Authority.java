@@ -266,4 +266,5 @@ public abstract class Authority extends SecurityAbstractEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

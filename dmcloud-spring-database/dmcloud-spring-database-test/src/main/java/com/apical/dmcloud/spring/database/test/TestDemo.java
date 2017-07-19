@@ -13,7 +13,7 @@ public class TestDemo  extends KoalaBaseSpringTestCase{
 	@Test
 	public void testCountAllCompany()
 	{
-		long count  = Company.countAllCompanys();
+		long count  = Company.countAllCompanys(null);
 		System.out.println(count);
 	}
 	@Test

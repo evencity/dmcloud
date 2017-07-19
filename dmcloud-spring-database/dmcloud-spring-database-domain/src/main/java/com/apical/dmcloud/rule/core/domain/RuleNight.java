@@ -3,7 +3,9 @@ package com.apical.dmcloud.rule.core.domain;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -334,10 +336,17 @@ public class RuleNight extends Rule
 	 * 统计规则数量
 	 * @return 规则数量
 	 */
-	public static long countAllRules()
+	public static long countAllRules(Long companyId)
 	{
-		String jpql = "select count(_rule.id) from RuleNight _rule";
-		Long count = getRepository().createJpqlQuery(jpql.toString())
+		//String jpql = "select count(_rule.id) from RuleNight _rule";
+		StringBuilder jpql = new StringBuilder("select count(_rule.id) from RuleNight _rule where ");
+		Map<String,Object> conditions = new HashMap<String,Object>();	
+		if(companyId != null){
+			jpql.append(" _rule.companyId = :companyId and");
+			conditions.put("companyId", companyId);
+		}
+		jpql.append(" 1=1");
+		Long count = getRepository().createJpqlQuery(jpql.toString()).setParameters(conditions)
 				.singleResult();
 		return count;
 	}
@@ -361,10 +370,17 @@ public class RuleNight extends Rule
 	 * @param pageSize 页面大小
 	 * @return 规则信息
 	 */
-	public static List<RuleNight> queryAllRulesInPage(int pageCount, int pageSize)
+	public static List<RuleNight> queryAllRulesInPage(Long companyId,int pageCount, int pageSize)
 	{
-		String jpql = "select _rule from RuleNight _rule";
-		List<RuleNight> rules = getRepository().createJpqlQuery(jpql.toString())
+		//String jpql = "select _rule from RuleNight _rule";
+		StringBuilder jpql = new StringBuilder("select _rule from RuleNight _rule where ");
+		Map<String,Object> conditions = new HashMap<String,Object>();	
+		if(companyId != null){
+			jpql.append(" _rule.companyId = :companyId and");
+			conditions.put("companyId", companyId);
+		}
+		jpql.append(" 1=1");
+		List<RuleNight> rules = getRepository().createJpqlQuery(jpql.toString()).setParameters(conditions)
 				.setMaxResults(pageSize)
 				.setFirstResult((pageCount - 1) * pageSize)
 				.list();

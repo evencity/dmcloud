@@ -105,6 +105,9 @@ public class Driver extends SecurityAbstractEntity
 	@JoinColumn(name = "COM_ID")
 	private Company company;
 	
+	@Column(name="COM_ID", updatable=false, insertable=false)
+	private Long companyId;
+	
 	/**
 	 * 司机驾驶的车辆
 	 */
@@ -114,6 +117,14 @@ public class Driver extends SecurityAbstractEntity
 			inverseJoinColumns = @JoinColumn(name = "VEHICLE_ID", referencedColumnName = "id"))
 	private Vehicle vehicle;
 	
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+	}
+
 	protected Driver()
 	{
 	}
@@ -545,11 +556,16 @@ public class Driver extends SecurityAbstractEntity
 	 * @param pageSize  条数
 	 * @return   List<Driver>
 	 */
-	public static List<Driver> queryAllDriverByKeyWordsInPage(String companyName, String number,String name, int pageCount ,int pageSize)
+	public static List<Driver> queryAllDriverByKeyWordsInPage(Long companyId, String companyName, String number,String name, int pageCount ,int pageSize)
 	{
 		StringBuilder jpql = new StringBuilder("select _driver from Driver _driver left join fetch _driver.vehicle left join fetch _driver.company  where");
 		Map<String,Object> conditions = new HashMap<String,Object>();
 		
+		if(companyId != null){
+			jpql.append(" _driver.company.id = :companyId and");
+			conditions.put("companyId", companyId);
+				
+		}
 		if(!StringUtils.isBlank(companyName)){
 			jpql.append(" _driver.company.name = :companyName and");
 			conditions.put("companyName", companyName);
@@ -587,11 +603,16 @@ public class Driver extends SecurityAbstractEntity
 	 * @param name  名字
 	 * @return   List<Driver>
 	 */
-	public static long countAllDriverByKeyWords(String companyName,
+	public static long countAllDriverByKeyWords(Long companyId,String companyName,
 			String number, String name){
 		StringBuilder jpql = new StringBuilder("select count(_driver.id) from Driver _driver where");
 		Map<String,Object> conditions = new HashMap<String,Object>();
 		
+		if(companyId != null){
+			jpql.append(" _driver.company.id = :companyId and");
+			conditions.put("companyId", companyId);
+				
+		}
 		if(!StringUtils.isBlank(companyName)){
 			jpql.append(" _driver.company.name = :companyName and");
 			conditions.put("companyName", companyName);
@@ -611,4 +632,6 @@ public class Driver extends SecurityAbstractEntity
 		Long count = getRepository().createJpqlQuery(jpql.toString()).setParameters(conditions).singleResult();
 		return count;
 	}
+
+	
 }

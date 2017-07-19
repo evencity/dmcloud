@@ -46,6 +46,12 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    /**
+     * PID
+     */
+    @Column(name = "PID")
+    private Long pId;
+    
     protected SecurityResource() {
     }
 
@@ -121,4 +127,13 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+	public Long getpId() {
+		return pId;
+	}
+
+	public void setpId(Long pId) {
+		this.pId = pId;
+	}
+
 }

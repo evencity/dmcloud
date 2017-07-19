@@ -11,8 +11,8 @@ public class TestDriver extends KoalaBaseSpringTestCase {
 	@Test
 	public void test(){
 		
-		List<Driver> d = Driver.queryAllDriverByKeyWordsInPage(null,"", "", 1, 10);
-		long count = Driver.countAllDriverByKeyWords(null,null,"");
+		List<Driver> d = Driver.queryAllDriverByKeyWordsInPage(null,null,"", "", 1, 10);
+		long count = Driver.countAllDriverByKeyWords(null,null,null,"");
 		System.err.println(  " " + count);
 	}
 	

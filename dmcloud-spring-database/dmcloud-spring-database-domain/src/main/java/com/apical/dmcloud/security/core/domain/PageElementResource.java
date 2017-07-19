@@ -32,6 +32,17 @@ public class PageElementResource extends SecurityResource {
 
     protected PageElementResource() {
     }
+    
+    /**
+     * 获取菜单资源
+     * @param menuResourceIds 菜单资源id数组
+     * @return 菜单资源列表
+     */
+    public static List<PageElementResource> findAllByIds(Long[] menuResourceIds) {
+        return getRepository().createCriteriaQuery(PageElementResource.class)
+                .in("id", menuResourceIds)
+                .list();
+    }
 
     public PageElementResource(String name, String identifier) {
         super(name);

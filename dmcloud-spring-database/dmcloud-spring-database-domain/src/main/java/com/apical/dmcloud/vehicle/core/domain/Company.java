@@ -1,6 +1,8 @@
 package com.apical.dmcloud.vehicle.core.domain;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -364,9 +366,9 @@ public class Company extends SecurityAbstractEntity
 		List<Company> coms;
 		if(name != null)
 		{
-			jpql = "select _company from Company _company where _company.name = :name order by _company.id";
+			jpql = "select _company from Company _company where _company.name like :name order by _company.id";
 			coms = getRepository().createJpqlQuery(jpql.toString())
-					.addParameter("name", name)
+					.addParameter("name", "%"+name+"%")
 					.setMaxResults(pageSize)
 					.setFirstResult((pageCount -1) * pageSize)
 					.list();
@@ -392,11 +394,42 @@ public class Company extends SecurityAbstractEntity
 	 * 统计公司数量
 	 * @return 公司总数m
 	 */
-	public static long countAllCompanys()
+	public static long countAllCompanys(String name)
 	{
-		String jpql = "select count(_company.id) from Company _company";
-		Long count = getRepository().createJpqlQuery(jpql.toString())
-				.singleResult();
+		Long count = 0l;
+		if(name != null){
+			String jpql = "select count(_company.id) from Company _company where _company.name like :name";
+			count = getRepository().createJpqlQuery(jpql.toString()).addParameter("name", "%"+name+"%")
+					.singleResult();
+		}else {
+			String jpql = "select count(_company.id) from Company _company";
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.singleResult();
+		}
 		return count;
+	}
+	
+	/**
+	 * 通过车辆id，来查询该车辆装配的设备信息
+	 * @param vehicleId 车辆id
+	 * @return 设备信息
+	 */
+	public static List<Company> listAllCompany(Long companyId) {
+		StringBuilder jpql = new StringBuilder("select _company from Company _company where");
+		Map<String,Object> conditions = new HashMap<String,Object>();	
+		if(companyId != null){
+			jpql.append(" _company.id = :companyId and");
+			conditions.put("companyId", companyId);
+		}
+		jpql.append(" 1=1");
+		jpql.append(" order by _company.id");
+		List<Company> companies =getRepository().createJpqlQuery(jpql.toString()).setParameters(conditions).list();
+		if(companies != null) {
+			return companies;
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
