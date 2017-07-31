@@ -285,7 +285,6 @@ public class OSSServiceUtils
 		}
 		
 		OSSObject object = client.getObject(CONSTANT.OSS_Bucket_DMCloud, srcFilePath);
-		
 		byte buffer[] = new byte[CONSTANT.BYTES_4K];
 		OutputStream out = null;
 		InputStream in = object.getObjectContent();
