@@ -1026,6 +1026,17 @@ public class User extends SecurityAbstractEntity {
 		return cId;
 	}
 
+	/**
+	 * 根据公司ID查询主账户
+	 * @param 公司ID
+	 * @return userId
+	 */
+	public static Long getPrimaryAccountByComId(long compayId) {
+		String jpql = "SELECT _user.id FROM User _user where _user.compayId=:compayId AND _user.pid IS NULL";
+		Long userId= getRepository().createJpqlQuery(jpql)
+				.addParameter("compayId", compayId).singleResult();
+		return userId;
+	}
 	public Long getpId() {
 		return pId;
 	}

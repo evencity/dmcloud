@@ -311,12 +311,11 @@ public class P2PUUID extends SecurityAbstractEntity {
 	public static Integer saveBatch(List<P2PUUID> list) {
 		int count = 0;
 		if(list != null && list.size() > 0){
-			StringBuilder sql = new StringBuilder("insert into cl_p2puuid (P2PUUID,COM_ID,STATE,DESCRIPTION) values ");
+			StringBuilder sql = new StringBuilder("insert into cl_p2puuid (P2PUUID,STATE,DESCRIPTION) values ");
 			Map<String,Object> conditions = new HashMap<String,Object>();	
 			int i = 0;
 			for(P2PUUID p2puuid : list){
 				sql.append("(:P2PUUID").append(i).append(",");
-				sql.append(":COM_ID").append(i).append(",");
 				sql.append(":STATE").append(i).append(",");
 				sql.append(":DESCRIPTION").append(i).append("),");
 				conditions.put("P2PUUID"+i, p2puuid.getP2puuid());
