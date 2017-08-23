@@ -1031,12 +1031,29 @@ public class User extends SecurityAbstractEntity {
 	 * @param 公司ID
 	 * @return userId
 	 */
-	public static Long getPrimaryAccountByComId(long compayId) {
-		String jpql = "SELECT _user.id FROM User _user where _user.compayId=:compayId AND _user.pid IS NULL";
+	public static Long getPrimaryAccountByComId(long companyId) {
+		String jpql = "SELECT _user.id FROM User _user where _user.companyId=:companyId AND _user.pId = 0";
 		Long userId= getRepository().createJpqlQuery(jpql)
-				.addParameter("compayId", compayId).singleResult();
+				.addParameter("companyId", companyId).singleResult();
 		return userId;
 	}
+	
+	/**
+	 * 根据主账户ID查询有无子账户
+	 * @param 公司ID
+	 * @return userId
+	 */
+	public static boolean isExcitSubAccout(long pId) {
+		String jpql = "SELECT _user.id FROM User _user where _user.pId=:pId";
+		Long subId = getRepository().createJpqlQuery(jpql)
+				.addParameter("pId", pId).singleResult();
+		if(subId != null){
+			return true;
+		}
+		return false;
+	}
+	
+	
 	public Long getpId() {
 		return pId;
 	}

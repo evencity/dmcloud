@@ -83,9 +83,9 @@
 		<property name="alias" value="default" />
 	</bean>  -->
  	 <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
-     <property name="url" value="jdbc:mysql://localhost:3306/dmclouddbzzh?useUnicode=true&amp;characterEncoding=UTF-8" />
+     <property name="url" value="jdbc:mysql://192.168.0.236:3306/dmclouddbzzh?useUnicode=true&amp;characterEncoding=UTF-8" />
      <property name="username" value="root" />
-     <property name="password" value="123456" />
+     <property name="password" value="root" />
 
      	<property name="filters" value="stat,slf4j" />
 

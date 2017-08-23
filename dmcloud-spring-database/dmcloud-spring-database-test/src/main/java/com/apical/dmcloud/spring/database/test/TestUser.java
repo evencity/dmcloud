@@ -51,7 +51,7 @@ public class TestUser extends KoalaBaseSpringTestCase
 	
 	@Test
 	public void  getCompnayIdTest(){
-		System.err.println(User.getCompanyIdByUserId(1l));
+		System.err.println(User.isExcitSubAccout(1249L));
 	}
 
 }
