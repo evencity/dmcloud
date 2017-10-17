@@ -10,6 +10,7 @@ import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 
 import com.apical.dmcloud.security.core.domain.User;
 import com.apical.dmcloud.security.core.domain.UserLoginRecord;
+import com.apical.dmcloud.vehicle.core.domain.Company;
 
 
 public class TestUser extends KoalaBaseSpringTestCase
@@ -51,7 +52,10 @@ public class TestUser extends KoalaBaseSpringTestCase
 	
 	@Test
 	public void  getCompnayIdTest(){
-		System.err.println(User.isExcitSubAccout(1249L));
+		//System.err.println(User.countAllUsersByCompanyId(null));
+		//System.err.println("xxxx"+Company.countAllCompanys(null));
+		//System.err.println("xxxx"+User.countAllUsersByCompanyId(1L));
+		System.err.println("xxxx"+User.getByUserAccount("KOALa"));
 	}
 
 }

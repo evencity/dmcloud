@@ -1,9 +1,11 @@
 package com.apical.dmcloud.alarm.core.domain;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -57,6 +59,20 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
     
+	@OneToMany(mappedBy="devicePeripheralsAlarmType")
+	private Set<DevicePeripheralsAlarmRecord> devicePeripheralsAlarmRecords; 
+	
+	public Set<DevicePeripheralsAlarmRecord> getDevicePeripheralsAlarmRecords() {
+		return devicePeripheralsAlarmRecords;
+	}
+
+
+	public void setDevicePeripheralsAlarmRecords(
+			Set<DevicePeripheralsAlarmRecord> devicePeripheralsAlarmRecords) {
+		this.devicePeripheralsAlarmRecords = devicePeripheralsAlarmRecords;
+	}
+
+
 	protected DevicePeripheralsAlarmType() {
 	}
 	
@@ -231,4 +247,24 @@ public class DevicePeripheralsAlarmType extends AbstractIntegerIDEntity {
 		
 		return types;
 	}
+	/**
+	 * 获取外围设备报警类型（大类）
+	 * @throws Exception
+	 */
+	public static List<DevicePeripheralsAlarmType> getAllTypebigDevicePeripheralsAlarmType() {
+		String jpql = "select _type from DevicePeripheralsAlarmType _type GROUP BY _type.typeBig ";
+		List<DevicePeripheralsAlarmType> records = getRepository().createJpqlQuery(jpql).list();
+		return records;
+	}
+	/**
+	 * 获取外围设备报警类型（通过大类获取小类）
+	 * @throws Exception
+	 */
+	public static List<DevicePeripheralsAlarmType> getAllDevicePeripheralsAlarmTypeByTypebig(short typeBig) {
+		String jpql = "select _type from DevicePeripheralsAlarmType _type where _type.typeBig=:typeBig";
+		List<DevicePeripheralsAlarmType> records = getRepository().createJpqlQuery(jpql)
+				.addParameter("typeBig", typeBig).list();
+		return records;
+	}
+	
 }

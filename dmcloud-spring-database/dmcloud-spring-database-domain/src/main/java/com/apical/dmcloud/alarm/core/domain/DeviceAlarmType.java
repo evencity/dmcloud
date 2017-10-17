@@ -239,4 +239,11 @@ public class DeviceAlarmType extends AbstractIntegerIDEntity
 		
 		return types;
 	}
+
+	@Override
+	public String toString() {
+		return "DeviceAlarmType [type=" + type + ", name=" + name
+				+ ", description=" + description + "]";
+	}
+	
 }

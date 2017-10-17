@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.apical.dmcloud.commons.infra.AlarmType;
 import com.apical.dmcloud.vehicle.core.domain.P2PUUID;
 public class TestP2PUUID extends KoalaBaseSpringTestCase
 {
@@ -18,7 +19,8 @@ public class TestP2PUUID extends KoalaBaseSpringTestCase
 	@Test
 	public void testP2PUUID() throws Exception
 	{
-		Set<Integer> set = new HashSet<Integer>();
+		System.err.println("AlarmType:"+AlarmType.AreaSpeedLimit);
+		/*Set<Integer> set = new HashSet<Integer>();
 		set.add(1);
 		set.add(2);
 		long countAll = P2PUUID.countAll("826S8MGY48ZZ",set);
@@ -27,7 +29,7 @@ public class TestP2PUUID extends KoalaBaseSpringTestCase
 		for(P2PUUID p : findAllInPage){
 			System.err.println("uuid::"+p.getP2puuid());
 		}
-		System.err.println("countAll:"+countAll);
+		System.err.println("countAll:"+countAll);*/
 		/*Set set = new HashSet<String>();
 		set.add("TR8MU814KAEU9V1G111A");
 		set.add("SSPBAGS87MNA5JKJ111A");

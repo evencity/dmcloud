@@ -110,7 +110,7 @@ public class TestAuthorization extends KoalaBaseSpringTestCase
 //			System.out.println();
 //		}
 		
-		long acount = DeviceAlarmVideo.countDeviceAlarmVideosByAlarmId(1);
+		/*long acount = DeviceAlarmVideo.countDeviceAlarmVideosByAlarmId(1);
 		System.out.println(acount);
 		List<DeviceAlarmVideo> usrs= DeviceAlarmVideo.queryDeviceAlarmVideosByAlarmId(1);
 		for(DeviceAlarmVideo u : usrs)
@@ -119,6 +119,10 @@ public class TestAuthorization extends KoalaBaseSpringTestCase
 			System.out.println("图片id：" + u.getVideoId());
 			System.out.println("存储路径：" + u.getStoragePath());
 			System.out.println();
+		}*/
+		List<DeviceAlarmType> list = DeviceAlarmType.queryAllAlarmType();
+		for(DeviceAlarmType deviceAlarmType : list){
+			System.err.println("deviceAlarmType:"+deviceAlarmType);
 		}
 	}
 }

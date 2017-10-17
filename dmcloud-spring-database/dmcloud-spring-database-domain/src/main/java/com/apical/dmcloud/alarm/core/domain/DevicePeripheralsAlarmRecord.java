@@ -3,15 +3,18 @@ package com.apical.dmcloud.alarm.core.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.apical.dmcloud.AbstractIDEntity;
 import com.apical.dmcloud.alarm.core.AlarmRecordNotExistException;
-import com.apical.dmcloud.commons.infra.AlarmType;
 
 /**
  * 外围设备报警信息表对应的：外围设备报警信息实体类
@@ -42,8 +45,15 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	/**
 	 * 报警类型标记
 	 */
-	@Column(name = "TYPE")
+	@Column(name = "TYPE",insertable=false,updatable=false)
 	private Integer type;
+	
+	/**
+	 * 报警类型标记
+	 */
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "TYPE")
+	private DevicePeripheralsAlarmType devicePeripheralsAlarmType;
 	
 	/**
 	 * 报警UID
@@ -70,6 +80,17 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	public DevicePeripheralsAlarmRecord() {
 	}
 	
+	public DevicePeripheralsAlarmType getDevicePeripheralsAlarmType() {
+		return devicePeripheralsAlarmType;
+	}
+
+
+	public void setDevicePeripheralsAlarmType(
+			DevicePeripheralsAlarmType devicePeripheralsAlarmType) {
+		this.devicePeripheralsAlarmType = devicePeripheralsAlarmType;
+	}
+
+
 	/**
 	 * 获取设备ID
 	 * @return 设备ID
@@ -313,20 +334,33 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	 * @return 设备报警数量
 	 * @throws Exception
 	 */
-	public static long countAllByVehicleIdAndTimerange(long vehicleId, int type,
+	public static long countAllByVehicleIdAndTimerange(long vehicleId, Integer type, 
 			Date startDate, Date endDate) {
-		String jpql = "select count(_record.id) from DevicePeripheralsAlarmRecord _record where"
-				+ " _record.vehicleId=:vehicleId"
-				+ " and _record.type=:type"
-				+ " and _record.alarmTime > :beginDate"
-				+ " and _record.alarmTime < :endDate";
-		Long count = getRepository().createJpqlQuery(jpql.toString())
-				.addParameter("vehicleId", vehicleId)
-				.addParameter("type", type)
-				.addParameter("beginDate", startDate)
-				.addParameter("endDate", endDate)
-				.singleResult();
-		
+		String jpql = "";
+		Long count = 0L;
+		if(type != null){
+			jpql = "select count(_record.id) from DevicePeripheralsAlarmRecord _record where"
+					+ " _record.vehicleId=:vehicleId"
+					+ " and _record.type=:type"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("type", type)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.singleResult();
+		}else {
+			jpql = "select count(_record.id) from DevicePeripheralsAlarmRecord _record where"
+					+ " _record.vehicleId=:vehicleId"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.singleResult();
+		}
 		return count;
 	}
 	
@@ -339,20 +373,33 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	 * @return 设备报警信息
 	 * @throws Exception
 	 */
-	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerange(long vehicleId, int type,
+	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerange(long vehicleId, Integer type,
 			Date startDate, Date endDate) {
-		String jpql = "select _record from DevicePeripheralsAlarmRecord _record"
-				+ " where _record.vehicleId=:vehicleId"
-				+ " and _record.type=:type"
-				+ " and _record.alarmTime > :beginDate"
-				+ " and _record.alarmTime < :endDate";
-		List<DevicePeripheralsAlarmRecord> records = getRepository().createJpqlQuery(jpql)
-				.addParameter("vehicleId", vehicleId)
-				.addParameter("type", type)
-				.addParameter("beginDate", startDate)
-				.addParameter("endDate", endDate)
-				.list();
-		
+		String jpql = "";
+		List<DevicePeripheralsAlarmRecord> records = null;
+		if(type == null){
+			jpql = "select _record from DevicePeripheralsAlarmRecord _record"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.list();
+		}else{
+			jpql = "select _record from DevicePeripheralsAlarmRecord _record"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.type=:type"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("type", type)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.list();
+		}
 		return records;
 	}
 	
@@ -366,22 +413,38 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	 * @throws Exception
 	 */
 	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerangeInPage(long vehicleId,
-			int type, Date startDate, Date endDate,
+			Integer type, Date startDate, Date endDate,
 			int pageCount, int pageSize) {
-		String jpql = "select _record from DevicePeripheralsAlarmRecord _record"
-				+ " where _record.vehicleId=:vehicleId"
-				+ " and _record.type=:type"
-				+ " and _record.alarmTime > :beginDate"
-				+ " and _record.alarmTime < :endDate";
-		List<DevicePeripheralsAlarmRecord> records = getRepository().createJpqlQuery(jpql)
-				.addParameter("vehicleId", vehicleId)
-				.addParameter("type", type)
-				.addParameter("beginDate", startDate)
-				.addParameter("endDate", endDate)
-				.setMaxResults(pageSize)
-				.setFirstResult((pageCount - 1) * pageSize)
-				.list();
-		
+		String jpql = "";
+		List<DevicePeripheralsAlarmRecord> records = null;
+		if(type != null){
+			jpql= "select _record from DevicePeripheralsAlarmRecord _record left join fetch _record.devicePeripheralsAlarmType"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.type=:type"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("type", type)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.setMaxResults(pageSize)
+					.setFirstResult((pageCount - 1) * pageSize)
+					.list();
+		}else {
+			jpql= "select _record from DevicePeripheralsAlarmRecord _record left join fetch _record.devicePeripheralsAlarmType"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			System.err.println(jpql);
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.setMaxResults(pageSize)
+					.setFirstResult((pageCount - 1) * pageSize)
+					.list();
+		}
 		return records;
 	}
 	
@@ -394,12 +457,12 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	 * @return 设备报警数量
 	 * @throws Exception
 	 */
-	public static long countAllByVehicleIdAndTimerange(long vehicleId, AlarmType alarmType,
+	/*public static long countAllByVehicleIdAndTimerange(long vehicleId, AlarmType alarmType,
 			Date startDate, Date endDate) {
 		int type = alarmType.ordinal();
 		
 		return countAllByVehicleIdAndTimerange(vehicleId, type, startDate, endDate);
-	}
+	}*/
 	
 	
 	
@@ -410,12 +473,12 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	 * @return 设备报警信息
 	 * @throws Exception
 	 */
-	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerange(long vehicleId, AlarmType alarmType,
+/*	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerange(long vehicleId, AlarmType alarmType,
 			Date startDate, Date endDate) {
 		int type = alarmType.ordinal();
 		
 		return queryAllByVehicleIdAndTimerange(vehicleId, type, startDate, endDate);
-	}
+	}*/
 	
 	/**
 	 * 根据车辆id，来分页查询设备报警。
@@ -426,12 +489,13 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	 * @return 设备报警信息
 	 * @throws Exception
 	 */
-	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerangeInPage(long vehicleId,
+	/*public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerangeInPage(long vehicleId,
 			AlarmType alarmType, Date startDate, Date endDate,
 			int pageCount, int pageSize) {
 		int type = alarmType.ordinal();
 		
 		return queryAllByVehicleIdAndTimerangeInPage(vehicleId, type, startDate, endDate,
 				pageCount, pageSize);
-	}
+	}*/
+	
 }

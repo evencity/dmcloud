@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 
 import com.apical.dmcloud.alarm.core.domain.DeviceLoginRecord;
+import com.apical.dmcloud.alarm.core.domain.DevicePeripheralsAlarmRecord;
+import com.apical.dmcloud.alarm.core.domain.DevicePeripheralsAlarmType;
 import com.apical.dmcloud.vehicle.core.domain.Device;
 
 
@@ -30,9 +32,15 @@ public class TestDevice extends KoalaBaseSpringTestCase
 			System.out.println(u.getDeviceId());
 			System.out.println(u.getLoginIP());
 		}*/
-		long count = Device.countAllDevicesInByKeyWords(null,null,"云智汇","012", "", "", "");
+		/*long count = Device.countAllDevicesInByKeyWords(null,null,"云智汇","012", "", "", "");
 		System.err.println(count);
 		List<Device> d = Device.queryAllDevicesInByKeyWordsInPage(null,null,null,null, "", "", "", 1, 10);
-		System.err.println(d.size());
+		System.err.println(d.size());*/
+		/*List<DevicePeripheralsAlarmRecord> list = DevicePeripheralsAlarmRecord.queryAllByVehicleIdAndTimerangeInPage(34326L, 101, new Date(), new Date(), 1, 10);
+		for(DevicePeripheralsAlarmRecord d : list){
+			System.err.println(d);
+		}*/
+		List<Device> byVehicleId = Device.getByVehicleId(25821L);
+		System.err.println("222");
 	}
 }

@@ -1053,6 +1053,25 @@ public class User extends SecurityAbstractEntity {
 		return false;
 	}
 	
+	/**
+	 * 根据公司id获取总人数
+	 * @param companyID
+	 * @return 总人数
+	 */
+	public static long countAllUsersByCompanyId(Long companyId)
+	{
+		Long count = 0l;
+		if(companyId != null){
+			String jpql = "select count(_user.id) from User _user where _user.companyId = :companyId";
+			count = getRepository().createJpqlQuery(jpql.toString()).addParameter("companyId", companyId)
+					.singleResult();
+		}else {
+			String jpql = "select count(_user.id) from User _user";
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.singleResult();
+		}
+		return count;
+	}
 	
 	public Long getpId() {
 		return pId;
