@@ -1,16 +1,11 @@
 package com.apical.dmcloud.spring.database.test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 
 import com.apical.dmcloud.security.core.domain.User;
-import com.apical.dmcloud.security.core.domain.UserLoginRecord;
-import com.apical.dmcloud.vehicle.core.domain.Company;
 
 
 public class TestUser extends KoalaBaseSpringTestCase
@@ -38,7 +33,7 @@ public class TestUser extends KoalaBaseSpringTestCase
 			System.out.println(u.getUserId());
 			System.out.println(u.getLoginPlace());
 		}*/
-		 int count = 10000;
+		/* int count = 10000;
 		 long start = System.currentTimeMillis();
 		 while(count > 1){
 			 Thread.currentThread().setName("thread--"  + count  + "---");
@@ -47,7 +42,8 @@ public class TestUser extends KoalaBaseSpringTestCase
 			 
 			 System.err.println( Thread.currentThread().getName() + u.getName() + "----count:" + (100 -count) + "---"+  (System.currentTimeMillis()-start));
 			 count--;
-		 }
+		 }*/
+		
 	}
 	
 	@Test
@@ -55,7 +51,8 @@ public class TestUser extends KoalaBaseSpringTestCase
 		//System.err.println(User.countAllUsersByCompanyId(null));
 		//System.err.println("xxxx"+Company.countAllCompanys(null));
 		//System.err.println("xxxx"+User.countAllUsersByCompanyId(1L));
-		System.err.println("xxxx"+User.getByUserAccount("KOALa"));
+		/*System.err.println("xxxx"+User.getByUserAccount("KOALa"));*/
+		User.getByUserAccount("");
 	}
 
 }

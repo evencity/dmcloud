@@ -36,11 +36,12 @@ public class TestDevice extends KoalaBaseSpringTestCase
 		System.err.println(count);
 		List<Device> d = Device.queryAllDevicesInByKeyWordsInPage(null,null,null,null, "", "", "", 1, 10);
 		System.err.println(d.size());*/
-		/*List<DevicePeripheralsAlarmRecord> list = DevicePeripheralsAlarmRecord.queryAllByVehicleIdAndTimerangeInPage(34326L, 101, new Date(), new Date(), 1, 10);
+		/*List<DevicePeripheralsAlarmRecord> list = DevicePeripheralsAlarmRecord.queryAllByVehicleIdAndTimerangeInPage(34326L, null, new Date(2017,5,17), new Date(2017,5,18), 1, 10);
 		for(DevicePeripheralsAlarmRecord d : list){
 			System.err.println(d);
 		}*/
-		List<Device> byVehicleId = Device.getByVehicleId(25821L);
-		System.err.println("222");
+		System.err.println("33333333");
+		/*List<Device> byVehicleId = Device.getByVehicleId(25821L);
+		System.err.println("222");*/
 	}
 }

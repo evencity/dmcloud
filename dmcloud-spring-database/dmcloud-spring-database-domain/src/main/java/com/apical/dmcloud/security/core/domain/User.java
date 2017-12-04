@@ -1080,5 +1080,4 @@ public class User extends SecurityAbstractEntity {
 	public void setpId(Long pId) {
 		this.pId = pId;
 	}
-	
 }

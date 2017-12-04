@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 
+import com.apical.dmcloud.security.core.domain.User;
 import com.apical.dmcloud.vehicle.core.domain.SIMCard;
 
 public class TestSimCard extends KoalaBaseSpringTestCase{

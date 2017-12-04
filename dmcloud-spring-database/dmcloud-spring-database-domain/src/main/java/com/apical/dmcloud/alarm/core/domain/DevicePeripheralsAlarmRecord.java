@@ -334,7 +334,7 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	 * @return 设备报警数量
 	 * @throws Exception
 	 */
-	public static long countAllByVehicleIdAndTimerange(long vehicleId, Integer type, 
+	public static long countAllByVehicleIdAndTimerange(long vehicleId, Integer type,
 			Date startDate, Date endDate) {
 		String jpql = "";
 		Long count = 0L;
@@ -363,6 +363,46 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 		}
 		return count;
 	}
+	/**
+	 * 统计车辆的设备报警数量。
+	 * @param vehicleId 车辆id
+	 * @param type 报警类型
+	 * @param startDate 起始日期
+	 * @param endDate 结束日期
+	 * @return 设备报警数量
+	 * @throws Exception
+	 */
+	public static long countAllByVehicleIdAndTimerange(long vehicleId, Integer type, Short typeBig, 
+			Date startDate, Date endDate) {
+		String jpql = "";
+		Long count = 0L;
+		if(type != null){
+			jpql = "select count(_record.id) from DevicePeripheralsAlarmRecord _record where"
+					+ " _record.vehicleId=:vehicleId"
+					+ " and _record.type=:type"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("type", type)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.singleResult();
+		}else {
+			jpql = "select count(_record.id) from DevicePeripheralsAlarmRecord _record where"
+					+ " _record.vehicleId=:vehicleId"
+					+ " and _record.devicePeripheralsAlarmType.typeBig=:typeBig"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("typeBig", typeBig)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.singleResult();
+		}
+		return count;
+	}
 	
 	
 	
@@ -384,6 +424,44 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 					+ " and _record.alarmTime < :endDate";
 			records = getRepository().createJpqlQuery(jpql)
 					.addParameter("vehicleId", vehicleId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.list();
+		}else{
+			jpql = "select _record from DevicePeripheralsAlarmRecord _record"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.type=:type"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("type", type)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.list();
+		}
+		return records;
+	}
+	/**
+	 * 根据车辆id，来获取设备报警。
+	 * @param vehicleId 车辆id
+	 * @param type 报警类型
+	 * @return 设备报警信息
+	 * @throws Exception
+	 */
+	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerange(long vehicleId, Integer type, Short typeBig,
+			Date startDate, Date endDate) {
+		String jpql = "";
+		List<DevicePeripheralsAlarmRecord> records = null;
+		if(type == null){
+			jpql = "select _record from DevicePeripheralsAlarmRecord _record"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.devicePeripheralsAlarmType.typeBig=:typeBig"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("typeBig", typeBig)
 					.addParameter("beginDate", startDate)
 					.addParameter("endDate", endDate)
 					.list();
@@ -436,9 +514,53 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 					+ " where _record.vehicleId=:vehicleId"
 					+ " and _record.alarmTime > :beginDate"
 					+ " and _record.alarmTime < :endDate";
-			System.err.println(jpql);
 			records = getRepository().createJpqlQuery(jpql)
 					.addParameter("vehicleId", vehicleId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.setMaxResults(pageSize)
+					.setFirstResult((pageCount - 1) * pageSize)
+					.list();
+		}
+		return records;
+	}
+	/**
+	 * 根据车辆id，来分页查询设备报警。
+	 * @param vehicleId 车辆id
+	 * @param type 报警类型
+	 * @param pageCount 页数
+	 * @param pageSize 页面大小
+	 * @return 设备报警信息
+	 * @throws Exception
+	 */
+	public static List<DevicePeripheralsAlarmRecord> queryAllByVehicleIdAndTimerangeInPage(long vehicleId,
+			Integer type,Short typeBig, Date startDate, Date endDate,
+			int pageCount, int pageSize) {
+		String jpql = "";
+		List<DevicePeripheralsAlarmRecord> records = null;
+		if(type != null){
+			jpql= "select _record from DevicePeripheralsAlarmRecord _record left join fetch _record.devicePeripheralsAlarmType"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.type=:type"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("type", type)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.setMaxResults(pageSize)
+					.setFirstResult((pageCount - 1) * pageSize)
+					.list();
+		}else {
+			jpql= "select _record from DevicePeripheralsAlarmRecord _record left join fetch _record.devicePeripheralsAlarmType"
+					+ " where _record.vehicleId=:vehicleId"
+					+ " and _record.devicePeripheralsAlarmType.typeBig=:typeBig"
+					+ " and _record.alarmTime > :beginDate"
+					+ " and _record.alarmTime < :endDate";
+			records = getRepository().createJpqlQuery(jpql)
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("typeBig", typeBig)
 					.addParameter("beginDate", startDate)
 					.addParameter("endDate", endDate)
 					.setMaxResults(pageSize)
