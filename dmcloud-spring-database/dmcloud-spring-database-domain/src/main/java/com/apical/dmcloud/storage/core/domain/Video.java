@@ -747,7 +747,7 @@ public class Video extends Resource
 		jpql.append("select count(_video) from Video _video")
 				.append(" where _video.vehicleId=:vehicleId");
 		if(cameraId != null){
-			jpql.append(" and _video.cameraId=:cameraId");
+			jpql.append(" and _video.cameraIndex=:cameraIndex");
 		}
 		if(ResourceSearchType.Normal.equals(type)){
 			jpql.append(" and _video.isUrgent=false");
@@ -757,12 +757,21 @@ public class Video extends Resource
 		jpql.append(" and _video.uploadTime>=:beginDate")
 				.append(" and _video.uploadTime<=:endDate")
 				.append(" order by _video.uploadTime desc");
-		Long count = getRepository().createJpqlQuery(jpql.toString())
-				.addParameter("vehicleId", vehicleId)
-				.addParameter("cameraId", cameraId)
-				.addParameter("beginDate", startDate)
-				.addParameter("endDate", endDate)
-				.singleResult();
+		Long count = 0L;
+		if(cameraId != null){
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("cameraIndex", cameraId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.singleResult();
+		}else{
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.singleResult();
+		}
 		return count;
 	}
 	
@@ -815,7 +824,7 @@ public class Video extends Resource
 		jpql.append("select _video from Video _video")
 				.append(" where _video.vehicleId=:vehicleId");
 		if(cameraId != null){
-			jpql.append(" and _video.cameraId=:cameraId");
+			jpql.append(" and _video.cameraIndex=:cameraIndex");
 		}
 		if(ResourceSearchType.Normal.equals(type)){
 			jpql.append(" and _video.isUrgent=false");
@@ -825,14 +834,25 @@ public class Video extends Resource
 		jpql.append(" and _video.uploadTime>=:beginDate")
 				.append(" and _video.uploadTime<=:endDate")
 				.append(" order by _video.uploadTime desc");
-		List<Video> videos = getRepository().createJpqlQuery(jpql.toString())
+		List<Video> videos = null;
+		if(cameraId != null){
+			videos = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("vehicleId", vehicleId)
-				.addParameter("cameraId", cameraId)
+				.addParameter("cameraIndex", cameraId)
 				.addParameter("beginDate", startDate)
 				.addParameter("endDate", endDate)
 				.setMaxResults(pageSize)
 				.setFirstResult((pageCount - 1) * pageSize)
 				.list();
+		}else{
+			videos = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("vehicleId", vehicleId)
+				.addParameter("beginDate", startDate)
+				.addParameter("endDate", endDate)
+				.setMaxResults(pageSize)
+				.setFirstResult((pageCount - 1) * pageSize)
+				.list();
+		}
 
 		return videos;
 	}

@@ -753,7 +753,7 @@ public class Picture extends Resource
 		jpql.append("select count(_picture) from Picture _picture")
 				.append(" where _picture.vehicleId=:vehicleId");
 		if(cameraId != null){
-			jpql.append(" and _picture.cameraId=:cameraId");
+			jpql.append(" and _picture.cameraIndex=:cameraIndex");
 		}
 		if(ResourceSearchType.Normal.equals(type)){
 			jpql.append(" and _picture.isUrgent=false");
@@ -763,12 +763,21 @@ public class Picture extends Resource
 		jpql.append(" and _picture.uploadTime>=:beginDate")
 				.append(" and _picture.uploadTime<=:endDate")
 				.append(" order by _picture.uploadTime desc");
-		Long count = getRepository().createJpqlQuery(jpql.toString())
+		Long count = 0L;
+		if(cameraId != null){
+			count = getRepository().createJpqlQuery(jpql.toString())
 				.addParameter("vehicleId", vehicleId)
-				.addParameter("cameraId", cameraId)
+				.addParameter("cameraIndex", cameraId)
 				.addParameter("beginDate", startDate)
 				.addParameter("endDate", endDate)
 				.singleResult();
+		}else{
+			count = getRepository().createJpqlQuery(jpql.toString())
+					.addParameter("vehicleId", vehicleId)
+					.addParameter("beginDate", startDate)
+					.addParameter("endDate", endDate)
+					.singleResult();
+		}
 		return count;
 	}
 	
@@ -839,7 +848,7 @@ public class Picture extends Resource
 		jpql.append("select _picture from Picture _picture")
 				.append(" where _picture.vehicleId=:vehicleId");
 		if(cameraId != null){
-			jpql.append(" and _picture.cameraId=:cameraId");
+			jpql.append(" and _picture.cameraIndex=:cameraIndex");
 		}
 		if(ResourceSearchType.Normal.equals(type)){
 			jpql.append(" and _picture.isUrgent=false");
@@ -849,15 +858,27 @@ public class Picture extends Resource
 		jpql.append(" and _picture.uploadTime>=:beginDate")
 				.append(" and _picture.uploadTime<=:endDate")
 				.append(" order by _picture.uploadTime desc");
-		List<Picture> pictures = getRepository().createJpqlQuery(jpql.toString())
-				.addParameter("vehicleId", vehicleId)
-				.addParameter("cameraId", cameraId)
-				.addParameter("beginDate", startDate)
-				.addParameter("endDate", endDate)
-				.setMaxResults(pageSize)
-				.setFirstResult((pageCount - 1) * pageSize)
-				.list();
-		
+		List<Picture> pictures = null;
+		if(cameraId != null){
+			getRepository().createJpqlQuery(jpql.toString())
+			.addParameter("vehicleId", vehicleId)
+			.addParameter("cameraIndex", cameraId)
+			.addParameter("beginDate", startDate)
+			.addParameter("endDate", endDate)
+			.setMaxResults(pageSize)
+			.setFirstResult((pageCount - 1) * pageSize)
+			.list();
+	
+		}else{
+			getRepository().createJpqlQuery(jpql.toString())
+			.addParameter("vehicleId", vehicleId)
+			.addParameter("beginDate", startDate)
+			.addParameter("endDate", endDate)
+			.setMaxResults(pageSize)
+			.setFirstResult((pageCount - 1) * pageSize)
+			.list();
+	
+		}
 		return pictures;
 	}
 	
