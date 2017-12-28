@@ -700,10 +700,10 @@ public class Picture extends Resource
 	 * @param endDate 结束日期
 	 * @return 数量
 	 */
-	public static long countAllPicturesByVehicleIdAndTimerange(long vehicleId, ResourceSearchType type,
+	public static long countAllPicturesByVehicleIdAndTimerange(long vehicleId, ResourceSearchType type, Short cameraId,
 			Date startDate, Date endDate)
 	{
-		String jpql = null;
+		/*String jpql = null;
 		switch(type)
 		{
 		case All:
@@ -748,7 +748,28 @@ public class Picture extends Resource
 		else
 		{
 			return 0;
+		}*/
+		StringBuilder jpql  = new StringBuilder();
+		jpql.append("select count(_picture) from Picture _picture")
+				.append(" where _picture.vehicleId=:vehicleId");
+		if(cameraId != null){
+			jpql.append(" and _picture.cameraId=:cameraId");
 		}
+		if(ResourceSearchType.Normal.equals(type)){
+			jpql.append(" and _picture.isUrgent=false");
+		}else if(ResourceSearchType.Alarm.equals(type)){
+			jpql.append(" and _picture.isUrgent=true");
+		}
+		jpql.append(" and _picture.uploadTime>=:beginDate")
+				.append(" and _picture.uploadTime<=:endDate")
+				.append(" order by _picture.uploadTime desc");
+		Long count = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("vehicleId", vehicleId)
+				.addParameter("cameraId", cameraId)
+				.addParameter("beginDate", startDate)
+				.addParameter("endDate", endDate)
+				.singleResult();
+		return count;
 	}
 	
 	/**
@@ -762,10 +783,10 @@ public class Picture extends Resource
 	 * @return 图片
 	 * @throws ParseException 
 	 */
-	public static List<Picture> queryAllPicturesByVehicleIdInPage(long vehicleId, ResourceSearchType type,
+	public static List<Picture> queryAllPicturesByVehicleIdInPage(long vehicleId, ResourceSearchType type, Short cameraId,
 			Date startDate, Date endDate, int pageCount, int pageSize) throws ParseException
 	{
-		String jpql = null;
+		/*String jpql = null;
 		switch(type)
 		{
 		case All:
@@ -813,7 +834,31 @@ public class Picture extends Resource
 		else
 		{
 			return null;
+		}*/
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select _picture from Picture _picture")
+				.append(" where _picture.vehicleId=:vehicleId");
+		if(cameraId != null){
+			jpql.append(" and _picture.cameraId=:cameraId");
 		}
+		if(ResourceSearchType.Normal.equals(type)){
+			jpql.append(" and _picture.isUrgent=false");
+		}else if(ResourceSearchType.Alarm.equals(type)){
+			jpql.append(" and _picture.isUrgent=true");
+		}
+		jpql.append(" and _picture.uploadTime>=:beginDate")
+				.append(" and _picture.uploadTime<=:endDate")
+				.append(" order by _picture.uploadTime desc");
+		List<Picture> pictures = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("vehicleId", vehicleId)
+				.addParameter("cameraId", cameraId)
+				.addParameter("beginDate", startDate)
+				.addParameter("endDate", endDate)
+				.setMaxResults(pageSize)
+				.setFirstResult((pageCount - 1) * pageSize)
+				.list();
+		
+		return pictures;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "deprecation" })

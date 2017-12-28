@@ -221,6 +221,26 @@ public class DevicePeripheralsAlarmRecord extends AbstractIDEntity
 	}
 	
 	/**
+	 * 根据vehicleId来删除报警信息
+	 * @param vehicleId 报警信息vehicleId
+	 * @return 是否删除成功
+	 */
+	public static boolean deleteByVehicleId(long vehicleId) {
+		String jpql = "delete from DevicePeripheralsAlarmRecord _record"
+				+ " where _record.vehicleId=:vehicleId";
+		int count = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("vehicleId", vehicleId)
+				.executeUpdate();
+		if(count == 1) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
 	 * 根据id，获取设备报警信息
 	 * @param id 报警信息id
 	 * @return 设备报警信息

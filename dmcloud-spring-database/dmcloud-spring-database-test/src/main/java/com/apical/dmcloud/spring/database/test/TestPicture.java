@@ -35,10 +35,10 @@ public class TestPicture extends KoalaBaseSpringTestCase
 		Date b = format.parse("2016-03-07");
 		Date d = format.parse("2016-04-08");
 		
-		long count = Picture.countAllPicturesByVehicleIdAndTimerange(1, ResourceSearchType.All, b, d);
+		long count = Picture.countAllPicturesByVehicleIdAndTimerange(1, ResourceSearchType.All,null, b, d);
 		System.out.println(count);
 		
-		List<Picture> ps = Picture.queryAllPicturesByVehicleIdInPage(1, ResourceSearchType.All, b, d, 1, 5);
+		List<Picture> ps = Picture.queryAllPicturesByVehicleIdInPage(1, ResourceSearchType.All,null, b, d, 1, 5);
 		for(Picture p : ps)
 		{
 			System.out.println(p.getFilename());

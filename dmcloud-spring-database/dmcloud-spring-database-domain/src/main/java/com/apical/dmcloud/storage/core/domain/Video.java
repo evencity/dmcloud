@@ -694,10 +694,10 @@ public class Video extends Resource
 	 * @param endDate 结束日期
 	 * @return 数量
 	 */
-	public static long countAllVideosByVehicleIdAndTimerange(long vehicleId, ResourceSearchType type,
+	public static long countAllVideosByVehicleIdAndTimerange(long vehicleId, ResourceSearchType type, Short cameraId,
 			Date startDate, Date endDate)
 	{
-		String jpql = null;
+		/*String jpql = null;
 		switch(type)
 		{
 		case All:
@@ -742,7 +742,28 @@ public class Video extends Resource
 		else
 		{
 			return 0;
+		}*/
+		StringBuilder jpql  = new StringBuilder();
+		jpql.append("select count(_video) from Video _video")
+				.append(" where _video.vehicleId=:vehicleId");
+		if(cameraId != null){
+			jpql.append(" and _video.cameraId=:cameraId");
 		}
+		if(ResourceSearchType.Normal.equals(type)){
+			jpql.append(" and _video.isUrgent=false");
+		}else if(ResourceSearchType.Alarm.equals(type)){
+			jpql.append(" and _video.isUrgent=true");
+		}
+		jpql.append(" and _video.uploadTime>=:beginDate")
+				.append(" and _video.uploadTime<=:endDate")
+				.append(" order by _video.uploadTime desc");
+		Long count = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("vehicleId", vehicleId)
+				.addParameter("cameraId", cameraId)
+				.addParameter("beginDate", startDate)
+				.addParameter("endDate", endDate)
+				.singleResult();
+		return count;
 	}
 	
 	/**
@@ -756,11 +777,10 @@ public class Video extends Resource
 	 * @return 视频
 	 * @throws ParseException 
 	 */
-	public static List<Video> queryAllVideosByVehicleIdInPage(long vehicleId, ResourceSearchType type,
+	public static List<Video> queryAllVideosByVehicleIdInPage(long vehicleId, ResourceSearchType type, Short cameraId,
 			Date startDate, Date endDate, int pageCount, int pageSize) throws ParseException
 	{
-		String jpql = null;
-		switch(type)
+		/*switch(type)
 		{
 		case All:
 			jpql = "select _video from Video _video"
@@ -790,24 +810,31 @@ public class Video extends Resource
 			
 		default:
 			break;
+		}*/
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select _video from Video _video")
+				.append(" where _video.vehicleId=:vehicleId");
+		if(cameraId != null){
+			jpql.append(" and _video.cameraId=:cameraId");
 		}
-		
-		if(jpql != null)
-		{
-			List<Video> videos = getRepository().createJpqlQuery(jpql)
-					.addParameter("vehicleId", vehicleId)
-					.addParameter("beginDate", startDate)
-					.addParameter("endDate", endDate)
-					.setMaxResults(pageSize)
-					.setFirstResult((pageCount - 1) * pageSize)
-					.list();
-	
-			return videos;
+		if(ResourceSearchType.Normal.equals(type)){
+			jpql.append(" and _video.isUrgent=false");
+		}else if(ResourceSearchType.Alarm.equals(type)){
+			jpql.append(" and _video.isUrgent=true");
 		}
-		else
-		{
-			return null;
-		}
+		jpql.append(" and _video.uploadTime>=:beginDate")
+				.append(" and _video.uploadTime<=:endDate")
+				.append(" order by _video.uploadTime desc");
+		List<Video> videos = getRepository().createJpqlQuery(jpql.toString())
+				.addParameter("vehicleId", vehicleId)
+				.addParameter("cameraId", cameraId)
+				.addParameter("beginDate", startDate)
+				.addParameter("endDate", endDate)
+				.setMaxResults(pageSize)
+				.setFirstResult((pageCount - 1) * pageSize)
+				.list();
+
+		return videos;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "deprecation" })
