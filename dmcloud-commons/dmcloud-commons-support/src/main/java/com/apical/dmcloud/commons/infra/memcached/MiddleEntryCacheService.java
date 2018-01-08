@@ -111,19 +111,19 @@ public class MiddleEntryCacheService {
 	 * @param o
 	 */
 	public static void removeRuleAssigned2Vehicle(Class<?> ruleClass, Long vehicleId) {
-		/*String key = getKeyRuleAssigned2Vehicle(ruleClass,vehicleId);
+		String key = getKeyRuleAssigned2Vehicle(ruleClass,vehicleId);
 		MemCachedClient mcc = MemcacheContextManager.getInstance().getMemCacheClient();
 
-		mcc.delete(key);*/
+		mcc.delete(key);
 	}
 	
 	
 	public static void removeRulesAssigned2Vehicle(Class<?> ruleClass, List<Long> vehicleIds) {
-		/*for(Long vehicleId : vehicleIds){
+		for(Long vehicleId : vehicleIds){
 			String key = getKeyRuleAssigned2Vehicle(ruleClass,vehicleId);
 			MemCachedClient mcc = MemcacheContextManager.getInstance().getMemCacheClient();
 			mcc.delete(key);
-		}*/
+		}
 		
 		
 	}
