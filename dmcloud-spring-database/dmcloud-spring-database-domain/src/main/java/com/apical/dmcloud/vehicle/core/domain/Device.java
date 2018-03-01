@@ -161,7 +161,7 @@ public class Device extends SecurityAbstractEntity
 		P2PUUID = p2puuid;
 	}
 
-	protected Device() {
+	public Device() {
 	}
 	
 	public Device(String number) {
